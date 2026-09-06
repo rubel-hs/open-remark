@@ -1,5 +1,119 @@
-import type { CommentData, AuthState, Commenter } from "./types"
+import type { CommentData, AuthState, Commenter, PendingUpload } from "./types"
 import { MAX_CHARS_COMMENT, MAX_CHARS_EDIT } from "./constants"
+
+export interface MediaPickerHooks {
+  enabled: boolean
+  maxImages: number
+  maxBytes: number
+  pending: PendingUpload[]
+  onPick: (files: FileList) => void
+  onRemove: (id: string) => void
+}
+
+export interface EditImagesHooks {
+  urls: string[]
+  onRemove: (url: string) => void
+}
+
+const CAMERA_ICON = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>`
+
+export function renderMediaStrip(
+  formKey: string,
+  hooks: MediaPickerHooks
+): HTMLElement {
+  const strip = document.createElement("div")
+  strip.className = "z-media-strip"
+  strip.dataset.strip = formKey
+
+  const input = document.createElement("input")
+  input.type = "file"
+  input.accept = "image/jpeg,image/png,image/gif,image/webp"
+  input.multiple = true
+  input.style.display = "none"
+  input.setAttribute("aria-hidden", "true")
+  input.addEventListener("change", () => {
+    if (input.files && input.files.length > 0) {
+      hooks.onPick(input.files)
+    }
+    input.value = ""
+  })
+  strip.appendChild(input)
+
+  const activeCount = hooks.pending.filter((p) => p.status !== "error").length
+  const picker = document.createElement("button")
+  picker.className = "z-img-btn"
+  picker.type = "button"
+  picker.setAttribute("aria-label", "Attach images")
+  picker.disabled = !hooks.enabled || activeCount >= hooks.maxImages
+  picker.innerHTML = CAMERA_ICON
+  picker.addEventListener("click", () => input.click())
+  strip.appendChild(picker)
+
+  for (const item of hooks.pending) {
+    const thumb = document.createElement("div")
+    thumb.className = "z-thumb"
+    if (item.status === "uploading") {
+      const spinner = document.createElement("div")
+      spinner.className = "z-thumb-spinner"
+      spinner.setAttribute("aria-hidden", "true")
+      thumb.appendChild(spinner)
+      const name = document.createElement("span")
+      name.className = "z-thumb-name"
+      name.textContent = item.name
+      thumb.appendChild(name)
+    } else if (item.status === "ready") {
+      const img = document.createElement("img")
+      img.src = item.thumb
+      img.alt = item.name
+      img.loading = "lazy"
+      thumb.appendChild(img)
+      const remove = document.createElement("button")
+      remove.className = "z-thumb-remove"
+      remove.type = "button"
+      remove.setAttribute("aria-label", `Remove ${item.name}`)
+      remove.textContent = "✕"
+      remove.addEventListener("click", () => hooks.onRemove(item.id))
+      thumb.appendChild(remove)
+    } else {
+      const msg = document.createElement("span")
+      msg.className = "z-thumb-error"
+      msg.textContent = item.error
+      thumb.appendChild(msg)
+      const remove = document.createElement("button")
+      remove.className = "z-thumb-remove"
+      remove.type = "button"
+      remove.setAttribute("aria-label", `Dismiss ${item.name}`)
+      remove.textContent = "✕"
+      remove.addEventListener("click", () => hooks.onRemove(item.id))
+      thumb.appendChild(remove)
+    }
+    strip.appendChild(thumb)
+  }
+
+  return strip
+}
+
+export function renderImageGallery(
+  urls: string[],
+  onOpen: (url: string) => void
+): HTMLElement {
+  const gallery = document.createElement("div")
+  gallery.className = "z-gallery"
+  for (const url of urls) {
+    const btn = document.createElement("button")
+    btn.className = "z-gallery-thumb"
+    btn.type = "button"
+    btn.setAttribute("aria-label", "View image")
+    const img = document.createElement("img")
+    img.src = url
+    img.alt = "Attached image"
+    img.loading = "lazy"
+    btn.appendChild(img)
+    btn.addEventListener("click", () => onOpen(url))
+    gallery.appendChild(btn)
+  }
+  return gallery
+}
 
 export interface CommentHandlers {
   onReply: (comment: CommentData) => void
@@ -10,8 +124,13 @@ export interface CommentHandlers {
   onDelete: (comment: CommentData) => void
   onCancelDelete: () => void
   onConfirmDelete: (commentId: string) => void
-  onSubmitReply: (body: string, parentId: string) => void
+  onSubmitReply: (
+    body: string,
+    parentId: string,
+    imageUrls?: string[]
+  ) => void | Promise<void>
   onCancelReply: () => void
+  onOpenImage: (url: string) => void
 }
 
 export interface CommentState {
@@ -21,6 +140,8 @@ export interface CommentState {
   isSubmitting: boolean
   currentUser: Commenter | null
   likingIds: Set<string>
+  replyMediaHooks?: (commentId: string) => MediaPickerHooks | null
+  editImagesFor?: (comment: CommentData) => EditImagesHooks | null
 }
 
 interface InlineFormConfig {
@@ -33,8 +154,11 @@ interface InlineFormConfig {
   submitLabel: string
   submittingLabel: string
   isSubmitting: boolean
-  onSubmit: (body: string) => void | Promise<void>
+  onSubmit: (body: string, imageUrls?: string[]) => void | Promise<void>
   onCancel: () => void
+  media?: MediaPickerHooks | null
+  mediaFormKey?: string
+  editImages?: EditImagesHooks | null
 }
 
 function renderInlineForm(cfg: InlineFormConfig): HTMLElement {
@@ -61,6 +185,38 @@ function renderInlineForm(cfg: InlineFormConfig): HTMLElement {
   textarea.rows = 2
   textarea.disabled = cfg.isSubmitting
   wrap.appendChild(textarea)
+
+  if (cfg.media) {
+    wrap.appendChild(renderMediaStrip(cfg.mediaFormKey ?? "inline", cfg.media))
+  }
+
+  if (cfg.editImages && cfg.editImages.urls.length > 0) {
+    const editStrip = document.createElement("div")
+    editStrip.className = "z-media-strip"
+    for (const url of cfg.editImages.urls) {
+      const thumb = document.createElement("div")
+      thumb.className = "z-thumb"
+      const img = document.createElement("img")
+      img.src = url
+      img.alt = "Attached image"
+      img.loading = "lazy"
+      thumb.appendChild(img)
+      const remove = document.createElement("button")
+      remove.className = "z-thumb-remove"
+      remove.type = "button"
+      remove.setAttribute("aria-label", "Remove image")
+      remove.textContent = "✕"
+      const targetUrl = url
+      const thumbEl = thumb
+      remove.addEventListener("click", () => {
+        cfg.editImages?.onRemove(targetUrl)
+        thumbEl.remove()
+      })
+      thumb.appendChild(remove)
+      editStrip.appendChild(thumb)
+    }
+    wrap.appendChild(editStrip)
+  }
 
   const footer = document.createElement("div")
   footer.className = "z-inline-form-footer"
@@ -94,7 +250,12 @@ function renderInlineForm(cfg: InlineFormConfig): HTMLElement {
       textarea.focus()
       return
     }
-    await cfg.onSubmit(body)
+    const readyUrls = cfg.media
+      ? cfg.media.pending
+          .filter((p) => p.status === "ready")
+          .map((p) => (p as Extract<PendingUpload, { status: "ready" }>).url)
+      : []
+    await cfg.onSubmit(body, readyUrls.length > 0 ? readyUrls : undefined)
   })
   btnWrap.appendChild(submitBtn)
   footer.appendChild(btnWrap)
@@ -244,6 +405,7 @@ export function renderCommentItem(
     onConfirmDelete,
     onSubmitReply,
     onCancelReply,
+    onOpenImage,
   } = handlers
   const { replyingToId, editingId, deletingId, isSubmitting, currentUser } =
     state
@@ -349,6 +511,10 @@ export function renderCommentItem(
     const body = renderCommentBody(comment.body)
     right.appendChild(body)
 
+    if (comment.imageUrls && comment.imageUrls.length > 0) {
+      right.appendChild(renderImageGallery(comment.imageUrls, onOpenImage))
+    }
+
     const actions = document.createElement("div")
     actions.className = "z-comment-actions"
 
@@ -439,7 +605,13 @@ export function renderCommentItem(
     const editWrap = document.createElement("div")
     editWrap.className = "z-inline-edit"
     editWrap.appendChild(
-      renderInlineEditForm(comment, onSubmitEdit, onCancelEdit, isSubmitting)
+      renderInlineEditForm(
+        comment,
+        onSubmitEdit,
+        onCancelEdit,
+        isSubmitting,
+        state.editImagesFor?.(comment) ?? null
+      )
     )
     li.appendChild(editWrap)
   }
@@ -453,7 +625,9 @@ export function renderCommentItem(
         currentUser,
         onSubmitReply,
         onCancelReply,
-        isSubmitting
+        isSubmitting,
+        state.replyMediaHooks?.(comment.id) ?? null,
+        `reply:${comment.id}`
       )
     )
     li.appendChild(formWrap)
@@ -511,9 +685,15 @@ export function renderCommentItem(
 function renderInlineReplyForm(
   replyTo: CommentData,
   currentUser: Commenter,
-  onSubmit: (body: string, parentId: string) => void,
+  onSubmit: (
+    body: string,
+    parentId: string,
+    imageUrls?: string[]
+  ) => void | Promise<void>,
   onCancel: () => void,
-  isSubmitting: boolean
+  isSubmitting: boolean,
+  media?: MediaPickerHooks | null,
+  mediaFormKey?: string
 ): HTMLElement {
   return renderInlineForm({
     headerLabel: `Reply to ${replyTo.commenter.name}`,
@@ -525,8 +705,10 @@ function renderInlineReplyForm(
     submitLabel: "Reply",
     submittingLabel: "Posting…",
     isSubmitting,
-    onSubmit: (body) => onSubmit(body, replyTo.id),
+    onSubmit: (body, imageUrls) => onSubmit(body, replyTo.id, imageUrls),
     onCancel,
+    media: media ?? null,
+    mediaFormKey,
   })
 }
 
@@ -534,7 +716,8 @@ function renderInlineEditForm(
   comment: CommentData,
   onSubmit: (commentId: string, body: string) => void,
   onCancel: () => void,
-  isSubmitting: boolean
+  isSubmitting: boolean,
+  editImages?: EditImagesHooks | null
 ): HTMLElement {
   return renderInlineForm({
     headerLabel: null,
@@ -548,6 +731,7 @@ function renderInlineEditForm(
     isSubmitting,
     onSubmit: (body) => onSubmit(comment.id, body),
     onCancel,
+    editImages: editImages ?? null,
   })
 }
 
@@ -657,10 +841,15 @@ export function renderAuthBar(
 }
 
 export function renderCommentForm(
-  onSubmit: (body: string, parentId?: string) => Promise<void>,
+  onSubmit: (
+    body: string,
+    parentId?: string,
+    imageUrls?: string[]
+  ) => Promise<void>,
   replyTo: CommentData | null,
   onCancelReply: () => void,
-  isSubmitting: boolean
+  isSubmitting: boolean,
+  media?: MediaPickerHooks | null
 ): HTMLElement {
   const form = document.createElement("div")
   form.className = "z-form"
@@ -705,6 +894,10 @@ export function renderCommentForm(
 
   form.appendChild(textarea)
 
+  if (media) {
+    form.appendChild(renderMediaStrip("main", media))
+  }
+
   const footer = document.createElement("div")
   footer.className = "z-form-footer"
 
@@ -729,7 +922,16 @@ export function renderCommentForm(
       textarea.focus()
       return
     }
-    await onSubmit(body, replyTo?.id)
+    const readyUrls = media
+      ? media.pending
+          .filter((p) => p.status === "ready")
+          .map((p) => (p as Extract<PendingUpload, { status: "ready" }>).url)
+      : []
+    await onSubmit(
+      body,
+      replyTo?.id,
+      readyUrls.length > 0 ? readyUrls : undefined
+    )
     textarea.value = ""
     textarea.style.height = ""
     counter.textContent = `0 / ${MAX_CHARS_COMMENT}`
