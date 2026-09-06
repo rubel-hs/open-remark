@@ -68,6 +68,12 @@ export async function PATCH(
       throw new ApiError("Your account has been suspended on this site", 403)
     }
 
+    if (parsed.data.status !== undefined) {
+      const updated = await deleteComment(id)
+      return buildCorsResponse(req, updated)
+    }
+
+    let updated
     if (parsed.data.imageUrls !== undefined) {
       const siteCheck = await db.comment.findUnique({
         where: { id },
@@ -83,17 +89,14 @@ export async function PATCH(
         throw new ApiError("Image uploads are disabled on this site", 403)
       if (parsed.data.imageUrls.length > siteCheck.page.site.mediaMaxImages)
         throw new ApiError("Too many images", 400)
-      const updated = await updateCommentImages(id, parsed.data.imageUrls)
-      return buildCorsResponse(req, updated)
+      updated = await updateCommentImages(id, parsed.data.imageUrls)
     }
 
     if (parsed.data.body !== undefined) {
-      const updated = await updateCommentBody(id, parsed.data.body)
-      return buildCorsResponse(req, updated)
+      updated = await updateCommentBody(id, parsed.data.body)
     }
 
-    if (parsed.data.status !== undefined) {
-      const updated = await deleteComment(id)
+    if (updated !== undefined) {
       return buildCorsResponse(req, updated)
     }
 
