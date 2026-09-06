@@ -16,7 +16,7 @@ settings and storage on free third-party hosts via per-site API keys.
 | D2 | API key is per-site (dashboard field), not global env | Free-tier quotas are per key; one abusive site must not burn the instance's quota |
 | D3 | Images only for v1 (JPG, PNG, GIF, WebP) | Smallest abuse surface and simplest moderation story |
 | D4 | Provider abstraction, v1 ships imgbb + catbox, imgur stubbed | imgbb: single-key POST API, 32 MB/image, direct links, `delete_url`, `expiration` param. catbox: keyless fallback, 200 MB, permanent direct links (user-funded, no SLA — zero-setup option). imgur rejected for v1: app-registration friction per site, 10 MB stills, recompression, hotlink discouragement, inactive-content purges |
-| D5 | Optimize with `sharp` directly (WebP, quality 75), NOT the `oi-optimize-images` package API | `oi-optimize-images` is a bulk-folder CLI (`discoverImages` → files on disk → `-oi-out/` sibling); per-request use would mean temp-file I/O per upload. `sharp` is its underlying engine — same bytes, buffer-in/buffer-out, no temp files. `oi` remains the tool for repo/static assets |
+| D5 | Optimize with `sharp` directly (WebP, quality 75) | `oi-optimize-images` is a bulk-folder CLI (files on disk → `-oi-out/` sibling); per-request use would mean temp-file I/O per upload. `sharp` is its engine — same bytes, buffer-in/buffer-out |
 | D6 | Reddit-style attach model: `Comment.imageUrls`, max 4 per comment | Thumbnails below text, lightbox expand, preview strip with remove-before-post |
 | D7 | Media off by default per site | Opt-in; existing sites see zero behavior change |
 
@@ -93,7 +93,7 @@ New widget route following the widget pattern: `OPTIONS` preflight,
 ## 8. Dashboard UI
 
 New `MediaSection` client component in `components/dashboard/site-settings-form/`
-(C.LEADING: Card + `Switch` toggle + `Select` provider + `Input` password key +
+(Card + `Switch` toggle + `Select` provider + `Input` password key +
 native form + existing `useUpdateSite` mutation + sonner toasts), wired into
 `SiteSettingsForm` orchestrator behind a new `media` entry in
 `SETTINGS_SECTION_CAPABILITY` (`MANAGE_SETTINGS`). Dashboard comments table
