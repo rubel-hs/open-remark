@@ -95,7 +95,7 @@ export function renderMediaStrip(
 
 export function renderImageGallery(
   urls: string[],
-  onOpen: (url: string) => void
+  onOpen: (url: string, opener: HTMLElement) => void
 ): HTMLElement {
   const gallery = document.createElement("div")
   gallery.className = "z-gallery"
@@ -109,7 +109,9 @@ export function renderImageGallery(
     img.alt = "Attached image"
     img.loading = "lazy"
     btn.appendChild(img)
-    btn.addEventListener("click", () => onOpen(url))
+    const targetUrl = url
+    const opener = btn
+    btn.addEventListener("click", () => onOpen(targetUrl, opener))
     gallery.appendChild(btn)
   }
   return gallery
@@ -130,7 +132,7 @@ export interface CommentHandlers {
     imageUrls?: string[]
   ) => void | Promise<void>
   onCancelReply: () => void
-  onOpenImage: (url: string) => void
+  onOpenImage: (url: string, opener: HTMLElement) => void
 }
 
 export interface CommentState {
@@ -159,6 +161,19 @@ interface InlineFormConfig {
   media?: MediaPickerHooks | null
   mediaFormKey?: string
   editImages?: EditImagesHooks | null
+}
+
+function hasUploadingMedia(media?: MediaPickerHooks | null): boolean {
+  return !!media?.pending.some((p) => p.status === "uploading")
+}
+
+function renderUploadHint(visible: boolean): HTMLElement {
+  const hint = document.createElement("span")
+  hint.className = "z-upload-hint"
+  hint.setAttribute("aria-live", "polite")
+  hint.textContent = "Still uploading…"
+  if (!visible) hint.style.display = "none"
+  return hint
 }
 
 function renderInlineForm(cfg: InlineFormConfig): HTMLElement {
@@ -227,6 +242,9 @@ function renderInlineForm(cfg: InlineFormConfig): HTMLElement {
   counter.textContent = `${cfg.initialValue.length} / ${cfg.maxChars}`
   footer.appendChild(counter)
 
+  const uploadHint = renderUploadHint(hasUploadingMedia(cfg.media))
+  footer.appendChild(uploadHint)
+
   const btnWrap = document.createElement("div")
   btnWrap.className = "z-inline-form-btns"
 
@@ -243,8 +261,16 @@ function renderInlineForm(cfg: InlineFormConfig): HTMLElement {
   submitBtn.textContent = cfg.isSubmitting
     ? cfg.submittingLabel
     : cfg.submitLabel
-  submitBtn.disabled = cfg.isSubmitting || cfg.initialValue.length === 0
+  submitBtn.disabled =
+    cfg.isSubmitting ||
+    cfg.initialValue.length === 0 ||
+    hasUploadingMedia(cfg.media)
   submitBtn.addEventListener("click", async () => {
+    if (hasUploadingMedia(cfg.media)) {
+      uploadHint.style.display = ""
+      submitBtn.disabled = true
+      return
+    }
     const body = textarea.value.trim()
     if (!body || body.length > cfg.maxChars) {
       textarea.focus()
@@ -271,7 +297,10 @@ function renderInlineForm(cfg: InlineFormConfig): HTMLElement {
       len >= cfg.maxChars * 0.9 && len < cfg.maxChars
     )
     counter.classList.toggle("z-char-counter-over", len > cfg.maxChars)
-    submitBtn.disabled = cfg.isSubmitting || len === 0 || len > cfg.maxChars
+    const uploading = hasUploadingMedia(cfg.media)
+    uploadHint.style.display = uploading ? "" : "none"
+    submitBtn.disabled =
+      cfg.isSubmitting || len === 0 || len > cfg.maxChars || uploading
   })
 
   setTimeout(() => textarea.focus(), 0)
@@ -889,7 +918,10 @@ export function renderCommentForm(
       len >= MAX_CHARS_COMMENT * 0.9 && len < MAX_CHARS_COMMENT
     )
     counter.classList.toggle("z-char-counter-over", len > MAX_CHARS_COMMENT)
-    submitBtn.disabled = isSubmitting || len === 0 || len > MAX_CHARS_COMMENT
+    const uploading = hasUploadingMedia(media)
+    mainUploadHint.style.display = uploading ? "" : "none"
+    submitBtn.disabled =
+      isSubmitting || len === 0 || len > MAX_CHARS_COMMENT || uploading
   })
 
   form.appendChild(textarea)
@@ -907,6 +939,9 @@ export function renderCommentForm(
   counter.textContent = `0 / ${MAX_CHARS_COMMENT}`
   footer.appendChild(counter)
 
+  const mainUploadHint = renderUploadHint(hasUploadingMedia(media))
+  footer.appendChild(mainUploadHint)
+
   const submitBtn = document.createElement("button")
   submitBtn.className = "z-btn z-btn-primary"
   submitBtn.type = "button"
@@ -915,8 +950,16 @@ export function renderCommentForm(
     : replyTo
       ? "Post reply"
       : "Post comment"
-  submitBtn.disabled = isSubmitting || textarea.value.trim().length === 0
+  submitBtn.disabled =
+    isSubmitting ||
+    textarea.value.trim().length === 0 ||
+    hasUploadingMedia(media)
   submitBtn.addEventListener("click", async () => {
+    if (hasUploadingMedia(media)) {
+      mainUploadHint.style.display = ""
+      submitBtn.disabled = true
+      return
+    }
     const body = textarea.value.trim()
     if (!body || body.length > MAX_CHARS_COMMENT) {
       textarea.focus()
