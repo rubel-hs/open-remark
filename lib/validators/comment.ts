@@ -11,7 +11,7 @@ const ImageUrlsSchema = z
         message: "Only http(s) image URLs allowed",
       })
   )
-  .max(4)
+  .max(10)
   .optional()
 
 export const CreateCommentSchema = z.object({

@@ -56,7 +56,7 @@ export function MediaSection({ site }: Props) {
             : {}),
         mediaMaxImages: Math.max(
           1,
-          Math.min(4, parseInt(mediaMaxImages, 10) || 4)
+          Math.min(10, parseInt(mediaMaxImages, 10) || 4)
         ),
         mediaMaxBytes: Math.max(
           262144,
@@ -173,13 +173,13 @@ export function MediaSection({ site }: Props) {
 
           <div className="grid grid-cols-2 gap-3">
             <div className="flex flex-col gap-1.5">
-              <Label htmlFor="media-max-images">Max images (1–4)</Label>
+              <Label htmlFor="media-max-images">Max images (1–10)</Label>
               <Input
                 id="media-max-images"
                 name="mediaMaxImages"
                 type="number"
                 min={1}
-                max={4}
+                max={10}
                 value={mediaMaxImages}
                 onChange={(e) => setMediaMaxImages(e.target.value)}
               />

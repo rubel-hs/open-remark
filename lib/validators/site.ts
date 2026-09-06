@@ -63,7 +63,7 @@ export const UpdateSiteSchema = z.object({
   mediaEnabled: z.boolean().optional(),
   mediaProvider: z.nativeEnum(MediaProvider).optional(),
   mediaApiKey: z.string().max(255).nullable().optional(),
-  mediaMaxImages: z.number().int().min(1).max(4).optional(),
+  mediaMaxImages: z.number().int().min(1).max(10).optional(),
   mediaMaxBytes: z.number().int().min(262144).max(33554432).optional(),
 })
 

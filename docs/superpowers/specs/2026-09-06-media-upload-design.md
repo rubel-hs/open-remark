@@ -17,7 +17,7 @@ settings and storage on free third-party hosts via per-site API keys.
 | D3 | Images only for v1 (JPG, PNG, GIF, WebP) | Smallest abuse surface and simplest moderation story |
 | D4 | Provider abstraction, v1 ships imgbb + catbox, imgur stubbed | imgbb: single-key POST API, 32 MB/image, direct links, `delete_url`, `expiration` param. catbox: keyless fallback, 200 MB, permanent direct links (user-funded, no SLA — zero-setup option). imgur rejected for v1: app-registration friction per site, 10 MB stills, recompression, hotlink discouragement, inactive-content purges |
 | D5 | Optimize with `sharp` directly (WebP, quality 75) | `oi-optimize-images` is a bulk-folder CLI (files on disk → `-oi-out/` sibling); per-request use would mean temp-file I/O per upload. `sharp` is its engine — same bytes, buffer-in/buffer-out |
-| D6 | Reddit-style attach model: `Comment.imageUrls`, max 4 per comment | Thumbnails below text, lightbox expand, preview strip with remove-before-post |
+| D6 | Reddit-style attach model: `Comment.imageUrls`, max 10 per comment (site-configurable 1–10, default 4) | Thumbnails below text, lightbox expand, preview strip with remove-before-post |
 | D7 | Media off by default per site | Opt-in; existing sites see zero behavior change |
 
 ## 3. Non-goals (Phase 2+)
@@ -84,10 +84,10 @@ New widget route following the widget pattern: `OPTIONS` preflight,
 
 ## 7. Comments API changes
 
-- `CreateCommentSchema` gains `imageUrls: z.array(z.string().url()).max(4).optional()`; `createComment` throws 403 when images attached but `mediaEnabled` is false, and caps count at `site.mediaMaxImages`. Images inherit the comment's `PENDING/APPROVED` lifecycle — no separate moderation queue.
+- `CreateCommentSchema` gains `imageUrls: z.array(z.string().url()).max(10).optional()`; `createComment` throws 403 when images attached but `mediaEnabled` is false, and caps count at `site.mediaMaxImages`. Images inherit the comment's `PENDING/APPROVED` lifecycle — no separate moderation queue.
 - All comment selectors/serializers (`buildCommentSelect`, `getApprovedCommentsForPage`, create/update/delete returns) include `imageUrls`.
 - GET `/api/widget/comments` config block gains `mediaEnabled`, `mediaMaxImages`, `mediaMaxBytes` so the widget renders the image button only when allowed.
-- `UpdateSiteSchema` gains the five media fields (`mediaMaxImages`: int 1–4, `mediaMaxBytes`: positive int ≤ 32 MB provider ceiling, `mediaProvider`: native enum, `mediaApiKey`: nullable string); the admin PATCH writes `mediaApiKey` but no GET serializes it (password semantics: UI shows saved/replace/clear, never the value).
+- `UpdateSiteSchema` gains the five media fields (`mediaMaxImages`: int 1–10, default 4, `mediaMaxBytes`: positive int ≤ 32 MB provider ceiling, `mediaProvider`: native enum, `mediaApiKey`: nullable string); the admin PATCH writes `mediaApiKey` but no GET serializes it (password semantics: UI shows saved/replace/clear, never the value).
 - Edit comment: images removable, not addable. Delete: soft-delete unchanged; gallery hidden on DELETED/SPAM; provider `deleteUrl` fired best-effort, failures swallowed (free hosts are sticky).
 
 ## 8. Dashboard UI
