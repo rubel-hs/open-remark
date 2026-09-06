@@ -16,6 +16,7 @@ export type Commenter = {
 export type CommentData = {
   id: string
   body: string
+  imageUrls: string[]
   status: "PENDING" | "APPROVED" | "DELETED" | "SPAM"
   createdAt: string
   editedAt: string | null

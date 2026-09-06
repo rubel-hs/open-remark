@@ -76,7 +76,8 @@ export async function updateComment(
   appUrl: string,
   token: string,
   commentId: string,
-  body: string
+  body?: string,
+  imageUrls?: string[]
 ): Promise<CommentData> {
   const res = await fetch(`${appUrl}/api/widget/comments/${commentId}`, {
     method: "PATCH",
@@ -84,7 +85,10 @@ export async function updateComment(
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify({ body }),
+    body: JSON.stringify({
+      ...(body !== undefined && { body }),
+      ...(imageUrls !== undefined && { imageUrls }),
+    }),
   })
   if (!res.ok) {
     if (res.status === 401) throw new UnauthorizedError()
