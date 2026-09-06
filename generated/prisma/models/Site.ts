@@ -30,12 +30,16 @@ export type SiteAvgAggregateOutputType = {
   likeNotificationLimit: number | null
   smtpPort: number | null
   radius: number | null
+  mediaMaxImages: number | null
+  mediaMaxBytes: number | null
 }
 
 export type SiteSumAggregateOutputType = {
   likeNotificationLimit: number | null
   smtpPort: number | null
   radius: number | null
+  mediaMaxImages: number | null
+  mediaMaxBytes: number | null
 }
 
 export type SiteMinAggregateOutputType = {
@@ -60,6 +64,11 @@ export type SiteMinAggregateOutputType = {
   theme: string | null
   primaryColor: string | null
   radius: number | null
+  mediaEnabled: boolean | null
+  mediaProvider: $Enums.MediaProvider | null
+  mediaApiKey: string | null
+  mediaMaxImages: number | null
+  mediaMaxBytes: number | null
   createdAt: Date | null
   updatedAt: Date | null
   ownerId: string | null
@@ -87,6 +96,11 @@ export type SiteMaxAggregateOutputType = {
   theme: string | null
   primaryColor: string | null
   radius: number | null
+  mediaEnabled: boolean | null
+  mediaProvider: $Enums.MediaProvider | null
+  mediaApiKey: string | null
+  mediaMaxImages: number | null
+  mediaMaxBytes: number | null
   createdAt: Date | null
   updatedAt: Date | null
   ownerId: string | null
@@ -114,6 +128,11 @@ export type SiteCountAggregateOutputType = {
   theme: number
   primaryColor: number
   radius: number
+  mediaEnabled: number
+  mediaProvider: number
+  mediaApiKey: number
+  mediaMaxImages: number
+  mediaMaxBytes: number
   createdAt: number
   updatedAt: number
   ownerId: number
@@ -125,12 +144,16 @@ export type SiteAvgAggregateInputType = {
   likeNotificationLimit?: true
   smtpPort?: true
   radius?: true
+  mediaMaxImages?: true
+  mediaMaxBytes?: true
 }
 
 export type SiteSumAggregateInputType = {
   likeNotificationLimit?: true
   smtpPort?: true
   radius?: true
+  mediaMaxImages?: true
+  mediaMaxBytes?: true
 }
 
 export type SiteMinAggregateInputType = {
@@ -155,6 +178,11 @@ export type SiteMinAggregateInputType = {
   theme?: true
   primaryColor?: true
   radius?: true
+  mediaEnabled?: true
+  mediaProvider?: true
+  mediaApiKey?: true
+  mediaMaxImages?: true
+  mediaMaxBytes?: true
   createdAt?: true
   updatedAt?: true
   ownerId?: true
@@ -182,6 +210,11 @@ export type SiteMaxAggregateInputType = {
   theme?: true
   primaryColor?: true
   radius?: true
+  mediaEnabled?: true
+  mediaProvider?: true
+  mediaApiKey?: true
+  mediaMaxImages?: true
+  mediaMaxBytes?: true
   createdAt?: true
   updatedAt?: true
   ownerId?: true
@@ -209,6 +242,11 @@ export type SiteCountAggregateInputType = {
   theme?: true
   primaryColor?: true
   radius?: true
+  mediaEnabled?: true
+  mediaProvider?: true
+  mediaApiKey?: true
+  mediaMaxImages?: true
+  mediaMaxBytes?: true
   createdAt?: true
   updatedAt?: true
   ownerId?: true
@@ -323,6 +361,11 @@ export type SiteGroupByOutputType = {
   theme: string
   primaryColor: string
   radius: number
+  mediaEnabled: boolean
+  mediaProvider: $Enums.MediaProvider
+  mediaApiKey: string | null
+  mediaMaxImages: number
+  mediaMaxBytes: number
   createdAt: Date
   updatedAt: Date
   ownerId: string
@@ -373,6 +416,11 @@ export type SiteWhereInput = {
   theme?: Prisma.StringFilter<"Site"> | string
   primaryColor?: Prisma.StringFilter<"Site"> | string
   radius?: Prisma.IntFilter<"Site"> | number
+  mediaEnabled?: Prisma.BoolFilter<"Site"> | boolean
+  mediaProvider?: Prisma.EnumMediaProviderFilter<"Site"> | $Enums.MediaProvider
+  mediaApiKey?: Prisma.StringNullableFilter<"Site"> | string | null
+  mediaMaxImages?: Prisma.IntFilter<"Site"> | number
+  mediaMaxBytes?: Prisma.IntFilter<"Site"> | number
   createdAt?: Prisma.DateTimeFilter<"Site"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Site"> | Date | string
   ownerId?: Prisma.StringFilter<"Site"> | string
@@ -405,6 +453,11 @@ export type SiteOrderByWithRelationInput = {
   theme?: Prisma.SortOrder
   primaryColor?: Prisma.SortOrder
   radius?: Prisma.SortOrder
+  mediaEnabled?: Prisma.SortOrder
+  mediaProvider?: Prisma.SortOrder
+  mediaApiKey?: Prisma.SortOrderInput | Prisma.SortOrder
+  mediaMaxImages?: Prisma.SortOrder
+  mediaMaxBytes?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
@@ -440,6 +493,11 @@ export type SiteWhereUniqueInput = Prisma.AtLeast<{
   theme?: Prisma.StringFilter<"Site"> | string
   primaryColor?: Prisma.StringFilter<"Site"> | string
   radius?: Prisma.IntFilter<"Site"> | number
+  mediaEnabled?: Prisma.BoolFilter<"Site"> | boolean
+  mediaProvider?: Prisma.EnumMediaProviderFilter<"Site"> | $Enums.MediaProvider
+  mediaApiKey?: Prisma.StringNullableFilter<"Site"> | string | null
+  mediaMaxImages?: Prisma.IntFilter<"Site"> | number
+  mediaMaxBytes?: Prisma.IntFilter<"Site"> | number
   createdAt?: Prisma.DateTimeFilter<"Site"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Site"> | Date | string
   ownerId?: Prisma.StringFilter<"Site"> | string
@@ -472,6 +530,11 @@ export type SiteOrderByWithAggregationInput = {
   theme?: Prisma.SortOrder
   primaryColor?: Prisma.SortOrder
   radius?: Prisma.SortOrder
+  mediaEnabled?: Prisma.SortOrder
+  mediaProvider?: Prisma.SortOrder
+  mediaApiKey?: Prisma.SortOrderInput | Prisma.SortOrder
+  mediaMaxImages?: Prisma.SortOrder
+  mediaMaxBytes?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
@@ -507,6 +570,11 @@ export type SiteScalarWhereWithAggregatesInput = {
   theme?: Prisma.StringWithAggregatesFilter<"Site"> | string
   primaryColor?: Prisma.StringWithAggregatesFilter<"Site"> | string
   radius?: Prisma.IntWithAggregatesFilter<"Site"> | number
+  mediaEnabled?: Prisma.BoolWithAggregatesFilter<"Site"> | boolean
+  mediaProvider?: Prisma.EnumMediaProviderWithAggregatesFilter<"Site"> | $Enums.MediaProvider
+  mediaApiKey?: Prisma.StringNullableWithAggregatesFilter<"Site"> | string | null
+  mediaMaxImages?: Prisma.IntWithAggregatesFilter<"Site"> | number
+  mediaMaxBytes?: Prisma.IntWithAggregatesFilter<"Site"> | number
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Site"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Site"> | Date | string
   ownerId?: Prisma.StringWithAggregatesFilter<"Site"> | string
@@ -534,6 +602,11 @@ export type SiteCreateInput = {
   theme?: string
   primaryColor?: string
   radius?: number
+  mediaEnabled?: boolean
+  mediaProvider?: $Enums.MediaProvider
+  mediaApiKey?: string | null
+  mediaMaxImages?: number
+  mediaMaxBytes?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   owner: Prisma.UserCreateNestedOneWithoutSitesInput
@@ -565,6 +638,11 @@ export type SiteUncheckedCreateInput = {
   theme?: string
   primaryColor?: string
   radius?: number
+  mediaEnabled?: boolean
+  mediaProvider?: $Enums.MediaProvider
+  mediaApiKey?: string | null
+  mediaMaxImages?: number
+  mediaMaxBytes?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   ownerId: string
@@ -596,6 +674,11 @@ export type SiteUpdateInput = {
   theme?: Prisma.StringFieldUpdateOperationsInput | string
   primaryColor?: Prisma.StringFieldUpdateOperationsInput | string
   radius?: Prisma.IntFieldUpdateOperationsInput | number
+  mediaEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mediaProvider?: Prisma.EnumMediaProviderFieldUpdateOperationsInput | $Enums.MediaProvider
+  mediaApiKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mediaMaxImages?: Prisma.IntFieldUpdateOperationsInput | number
+  mediaMaxBytes?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   owner?: Prisma.UserUpdateOneRequiredWithoutSitesNestedInput
@@ -627,6 +710,11 @@ export type SiteUncheckedUpdateInput = {
   theme?: Prisma.StringFieldUpdateOperationsInput | string
   primaryColor?: Prisma.StringFieldUpdateOperationsInput | string
   radius?: Prisma.IntFieldUpdateOperationsInput | number
+  mediaEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mediaProvider?: Prisma.EnumMediaProviderFieldUpdateOperationsInput | $Enums.MediaProvider
+  mediaApiKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mediaMaxImages?: Prisma.IntFieldUpdateOperationsInput | number
+  mediaMaxBytes?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -658,6 +746,11 @@ export type SiteCreateManyInput = {
   theme?: string
   primaryColor?: string
   radius?: number
+  mediaEnabled?: boolean
+  mediaProvider?: $Enums.MediaProvider
+  mediaApiKey?: string | null
+  mediaMaxImages?: number
+  mediaMaxBytes?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   ownerId: string
@@ -685,6 +778,11 @@ export type SiteUpdateManyMutationInput = {
   theme?: Prisma.StringFieldUpdateOperationsInput | string
   primaryColor?: Prisma.StringFieldUpdateOperationsInput | string
   radius?: Prisma.IntFieldUpdateOperationsInput | number
+  mediaEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mediaProvider?: Prisma.EnumMediaProviderFieldUpdateOperationsInput | $Enums.MediaProvider
+  mediaApiKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mediaMaxImages?: Prisma.IntFieldUpdateOperationsInput | number
+  mediaMaxBytes?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -711,6 +809,11 @@ export type SiteUncheckedUpdateManyInput = {
   theme?: Prisma.StringFieldUpdateOperationsInput | string
   primaryColor?: Prisma.StringFieldUpdateOperationsInput | string
   radius?: Prisma.IntFieldUpdateOperationsInput | number
+  mediaEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mediaProvider?: Prisma.EnumMediaProviderFieldUpdateOperationsInput | $Enums.MediaProvider
+  mediaApiKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mediaMaxImages?: Prisma.IntFieldUpdateOperationsInput | number
+  mediaMaxBytes?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -748,6 +851,11 @@ export type SiteCountOrderByAggregateInput = {
   theme?: Prisma.SortOrder
   primaryColor?: Prisma.SortOrder
   radius?: Prisma.SortOrder
+  mediaEnabled?: Prisma.SortOrder
+  mediaProvider?: Prisma.SortOrder
+  mediaApiKey?: Prisma.SortOrder
+  mediaMaxImages?: Prisma.SortOrder
+  mediaMaxBytes?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
@@ -757,6 +865,8 @@ export type SiteAvgOrderByAggregateInput = {
   likeNotificationLimit?: Prisma.SortOrder
   smtpPort?: Prisma.SortOrder
   radius?: Prisma.SortOrder
+  mediaMaxImages?: Prisma.SortOrder
+  mediaMaxBytes?: Prisma.SortOrder
 }
 
 export type SiteMaxOrderByAggregateInput = {
@@ -781,6 +891,11 @@ export type SiteMaxOrderByAggregateInput = {
   theme?: Prisma.SortOrder
   primaryColor?: Prisma.SortOrder
   radius?: Prisma.SortOrder
+  mediaEnabled?: Prisma.SortOrder
+  mediaProvider?: Prisma.SortOrder
+  mediaApiKey?: Prisma.SortOrder
+  mediaMaxImages?: Prisma.SortOrder
+  mediaMaxBytes?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
@@ -808,6 +923,11 @@ export type SiteMinOrderByAggregateInput = {
   theme?: Prisma.SortOrder
   primaryColor?: Prisma.SortOrder
   radius?: Prisma.SortOrder
+  mediaEnabled?: Prisma.SortOrder
+  mediaProvider?: Prisma.SortOrder
+  mediaApiKey?: Prisma.SortOrder
+  mediaMaxImages?: Prisma.SortOrder
+  mediaMaxBytes?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
@@ -817,6 +937,8 @@ export type SiteSumOrderByAggregateInput = {
   likeNotificationLimit?: Prisma.SortOrder
   smtpPort?: Prisma.SortOrder
   radius?: Prisma.SortOrder
+  mediaMaxImages?: Prisma.SortOrder
+  mediaMaxBytes?: Prisma.SortOrder
 }
 
 export type SiteScalarRelationFilter = {
@@ -876,6 +998,10 @@ export type IntFieldUpdateOperationsInput = {
   decrement?: number
   multiply?: number
   divide?: number
+}
+
+export type EnumMediaProviderFieldUpdateOperationsInput = {
+  set?: $Enums.MediaProvider
 }
 
 export type SiteCreateNestedOneWithoutPagesInput = {
@@ -956,6 +1082,11 @@ export type SiteCreateWithoutOwnerInput = {
   theme?: string
   primaryColor?: string
   radius?: number
+  mediaEnabled?: boolean
+  mediaProvider?: $Enums.MediaProvider
+  mediaApiKey?: string | null
+  mediaMaxImages?: number
+  mediaMaxBytes?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   pages?: Prisma.PageCreateNestedManyWithoutSiteInput
@@ -986,6 +1117,11 @@ export type SiteUncheckedCreateWithoutOwnerInput = {
   theme?: string
   primaryColor?: string
   radius?: number
+  mediaEnabled?: boolean
+  mediaProvider?: $Enums.MediaProvider
+  mediaApiKey?: string | null
+  mediaMaxImages?: number
+  mediaMaxBytes?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   pages?: Prisma.PageUncheckedCreateNestedManyWithoutSiteInput
@@ -1045,6 +1181,11 @@ export type SiteScalarWhereInput = {
   theme?: Prisma.StringFilter<"Site"> | string
   primaryColor?: Prisma.StringFilter<"Site"> | string
   radius?: Prisma.IntFilter<"Site"> | number
+  mediaEnabled?: Prisma.BoolFilter<"Site"> | boolean
+  mediaProvider?: Prisma.EnumMediaProviderFilter<"Site"> | $Enums.MediaProvider
+  mediaApiKey?: Prisma.StringNullableFilter<"Site"> | string | null
+  mediaMaxImages?: Prisma.IntFilter<"Site"> | number
+  mediaMaxBytes?: Prisma.IntFilter<"Site"> | number
   createdAt?: Prisma.DateTimeFilter<"Site"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Site"> | Date | string
   ownerId?: Prisma.StringFilter<"Site"> | string
@@ -1072,6 +1213,11 @@ export type SiteCreateWithoutPagesInput = {
   theme?: string
   primaryColor?: string
   radius?: number
+  mediaEnabled?: boolean
+  mediaProvider?: $Enums.MediaProvider
+  mediaApiKey?: string | null
+  mediaMaxImages?: number
+  mediaMaxBytes?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   owner: Prisma.UserCreateNestedOneWithoutSitesInput
@@ -1102,6 +1248,11 @@ export type SiteUncheckedCreateWithoutPagesInput = {
   theme?: string
   primaryColor?: string
   radius?: number
+  mediaEnabled?: boolean
+  mediaProvider?: $Enums.MediaProvider
+  mediaApiKey?: string | null
+  mediaMaxImages?: number
+  mediaMaxBytes?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   ownerId: string
@@ -1148,6 +1299,11 @@ export type SiteUpdateWithoutPagesInput = {
   theme?: Prisma.StringFieldUpdateOperationsInput | string
   primaryColor?: Prisma.StringFieldUpdateOperationsInput | string
   radius?: Prisma.IntFieldUpdateOperationsInput | number
+  mediaEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mediaProvider?: Prisma.EnumMediaProviderFieldUpdateOperationsInput | $Enums.MediaProvider
+  mediaApiKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mediaMaxImages?: Prisma.IntFieldUpdateOperationsInput | number
+  mediaMaxBytes?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   owner?: Prisma.UserUpdateOneRequiredWithoutSitesNestedInput
@@ -1178,6 +1334,11 @@ export type SiteUncheckedUpdateWithoutPagesInput = {
   theme?: Prisma.StringFieldUpdateOperationsInput | string
   primaryColor?: Prisma.StringFieldUpdateOperationsInput | string
   radius?: Prisma.IntFieldUpdateOperationsInput | number
+  mediaEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mediaProvider?: Prisma.EnumMediaProviderFieldUpdateOperationsInput | $Enums.MediaProvider
+  mediaApiKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mediaMaxImages?: Prisma.IntFieldUpdateOperationsInput | number
+  mediaMaxBytes?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1208,6 +1369,11 @@ export type SiteCreateWithoutBannedCommentersInput = {
   theme?: string
   primaryColor?: string
   radius?: number
+  mediaEnabled?: boolean
+  mediaProvider?: $Enums.MediaProvider
+  mediaApiKey?: string | null
+  mediaMaxImages?: number
+  mediaMaxBytes?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   owner: Prisma.UserCreateNestedOneWithoutSitesInput
@@ -1238,6 +1404,11 @@ export type SiteUncheckedCreateWithoutBannedCommentersInput = {
   theme?: string
   primaryColor?: string
   radius?: number
+  mediaEnabled?: boolean
+  mediaProvider?: $Enums.MediaProvider
+  mediaApiKey?: string | null
+  mediaMaxImages?: number
+  mediaMaxBytes?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   ownerId: string
@@ -1284,6 +1455,11 @@ export type SiteUpdateWithoutBannedCommentersInput = {
   theme?: Prisma.StringFieldUpdateOperationsInput | string
   primaryColor?: Prisma.StringFieldUpdateOperationsInput | string
   radius?: Prisma.IntFieldUpdateOperationsInput | number
+  mediaEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mediaProvider?: Prisma.EnumMediaProviderFieldUpdateOperationsInput | $Enums.MediaProvider
+  mediaApiKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mediaMaxImages?: Prisma.IntFieldUpdateOperationsInput | number
+  mediaMaxBytes?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   owner?: Prisma.UserUpdateOneRequiredWithoutSitesNestedInput
@@ -1314,6 +1490,11 @@ export type SiteUncheckedUpdateWithoutBannedCommentersInput = {
   theme?: Prisma.StringFieldUpdateOperationsInput | string
   primaryColor?: Prisma.StringFieldUpdateOperationsInput | string
   radius?: Prisma.IntFieldUpdateOperationsInput | number
+  mediaEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mediaProvider?: Prisma.EnumMediaProviderFieldUpdateOperationsInput | $Enums.MediaProvider
+  mediaApiKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mediaMaxImages?: Prisma.IntFieldUpdateOperationsInput | number
+  mediaMaxBytes?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1344,6 +1525,11 @@ export type SiteCreateWithoutMembersInput = {
   theme?: string
   primaryColor?: string
   radius?: number
+  mediaEnabled?: boolean
+  mediaProvider?: $Enums.MediaProvider
+  mediaApiKey?: string | null
+  mediaMaxImages?: number
+  mediaMaxBytes?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   owner: Prisma.UserCreateNestedOneWithoutSitesInput
@@ -1374,6 +1560,11 @@ export type SiteUncheckedCreateWithoutMembersInput = {
   theme?: string
   primaryColor?: string
   radius?: number
+  mediaEnabled?: boolean
+  mediaProvider?: $Enums.MediaProvider
+  mediaApiKey?: string | null
+  mediaMaxImages?: number
+  mediaMaxBytes?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   ownerId: string
@@ -1420,6 +1611,11 @@ export type SiteUpdateWithoutMembersInput = {
   theme?: Prisma.StringFieldUpdateOperationsInput | string
   primaryColor?: Prisma.StringFieldUpdateOperationsInput | string
   radius?: Prisma.IntFieldUpdateOperationsInput | number
+  mediaEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mediaProvider?: Prisma.EnumMediaProviderFieldUpdateOperationsInput | $Enums.MediaProvider
+  mediaApiKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mediaMaxImages?: Prisma.IntFieldUpdateOperationsInput | number
+  mediaMaxBytes?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   owner?: Prisma.UserUpdateOneRequiredWithoutSitesNestedInput
@@ -1450,6 +1646,11 @@ export type SiteUncheckedUpdateWithoutMembersInput = {
   theme?: Prisma.StringFieldUpdateOperationsInput | string
   primaryColor?: Prisma.StringFieldUpdateOperationsInput | string
   radius?: Prisma.IntFieldUpdateOperationsInput | number
+  mediaEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mediaProvider?: Prisma.EnumMediaProviderFieldUpdateOperationsInput | $Enums.MediaProvider
+  mediaApiKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mediaMaxImages?: Prisma.IntFieldUpdateOperationsInput | number
+  mediaMaxBytes?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1480,6 +1681,11 @@ export type SiteCreateWithoutInvitesInput = {
   theme?: string
   primaryColor?: string
   radius?: number
+  mediaEnabled?: boolean
+  mediaProvider?: $Enums.MediaProvider
+  mediaApiKey?: string | null
+  mediaMaxImages?: number
+  mediaMaxBytes?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   owner: Prisma.UserCreateNestedOneWithoutSitesInput
@@ -1510,6 +1716,11 @@ export type SiteUncheckedCreateWithoutInvitesInput = {
   theme?: string
   primaryColor?: string
   radius?: number
+  mediaEnabled?: boolean
+  mediaProvider?: $Enums.MediaProvider
+  mediaApiKey?: string | null
+  mediaMaxImages?: number
+  mediaMaxBytes?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   ownerId: string
@@ -1556,6 +1767,11 @@ export type SiteUpdateWithoutInvitesInput = {
   theme?: Prisma.StringFieldUpdateOperationsInput | string
   primaryColor?: Prisma.StringFieldUpdateOperationsInput | string
   radius?: Prisma.IntFieldUpdateOperationsInput | number
+  mediaEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mediaProvider?: Prisma.EnumMediaProviderFieldUpdateOperationsInput | $Enums.MediaProvider
+  mediaApiKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mediaMaxImages?: Prisma.IntFieldUpdateOperationsInput | number
+  mediaMaxBytes?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   owner?: Prisma.UserUpdateOneRequiredWithoutSitesNestedInput
@@ -1586,6 +1802,11 @@ export type SiteUncheckedUpdateWithoutInvitesInput = {
   theme?: Prisma.StringFieldUpdateOperationsInput | string
   primaryColor?: Prisma.StringFieldUpdateOperationsInput | string
   radius?: Prisma.IntFieldUpdateOperationsInput | number
+  mediaEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mediaProvider?: Prisma.EnumMediaProviderFieldUpdateOperationsInput | $Enums.MediaProvider
+  mediaApiKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mediaMaxImages?: Prisma.IntFieldUpdateOperationsInput | number
+  mediaMaxBytes?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1616,6 +1837,11 @@ export type SiteCreateManyOwnerInput = {
   theme?: string
   primaryColor?: string
   radius?: number
+  mediaEnabled?: boolean
+  mediaProvider?: $Enums.MediaProvider
+  mediaApiKey?: string | null
+  mediaMaxImages?: number
+  mediaMaxBytes?: number
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -1642,6 +1868,11 @@ export type SiteUpdateWithoutOwnerInput = {
   theme?: Prisma.StringFieldUpdateOperationsInput | string
   primaryColor?: Prisma.StringFieldUpdateOperationsInput | string
   radius?: Prisma.IntFieldUpdateOperationsInput | number
+  mediaEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mediaProvider?: Prisma.EnumMediaProviderFieldUpdateOperationsInput | $Enums.MediaProvider
+  mediaApiKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mediaMaxImages?: Prisma.IntFieldUpdateOperationsInput | number
+  mediaMaxBytes?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   pages?: Prisma.PageUpdateManyWithoutSiteNestedInput
@@ -1672,6 +1903,11 @@ export type SiteUncheckedUpdateWithoutOwnerInput = {
   theme?: Prisma.StringFieldUpdateOperationsInput | string
   primaryColor?: Prisma.StringFieldUpdateOperationsInput | string
   radius?: Prisma.IntFieldUpdateOperationsInput | number
+  mediaEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mediaProvider?: Prisma.EnumMediaProviderFieldUpdateOperationsInput | $Enums.MediaProvider
+  mediaApiKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mediaMaxImages?: Prisma.IntFieldUpdateOperationsInput | number
+  mediaMaxBytes?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   pages?: Prisma.PageUncheckedUpdateManyWithoutSiteNestedInput
@@ -1702,6 +1938,11 @@ export type SiteUncheckedUpdateManyWithoutOwnerInput = {
   theme?: Prisma.StringFieldUpdateOperationsInput | string
   primaryColor?: Prisma.StringFieldUpdateOperationsInput | string
   radius?: Prisma.IntFieldUpdateOperationsInput | number
+  mediaEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mediaProvider?: Prisma.EnumMediaProviderFieldUpdateOperationsInput | $Enums.MediaProvider
+  mediaApiKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mediaMaxImages?: Prisma.IntFieldUpdateOperationsInput | number
+  mediaMaxBytes?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1786,6 +2027,11 @@ export type SiteSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   theme?: boolean
   primaryColor?: boolean
   radius?: boolean
+  mediaEnabled?: boolean
+  mediaProvider?: boolean
+  mediaApiKey?: boolean
+  mediaMaxImages?: boolean
+  mediaMaxBytes?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   ownerId?: boolean
@@ -1819,6 +2065,11 @@ export type SiteSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   theme?: boolean
   primaryColor?: boolean
   radius?: boolean
+  mediaEnabled?: boolean
+  mediaProvider?: boolean
+  mediaApiKey?: boolean
+  mediaMaxImages?: boolean
+  mediaMaxBytes?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   ownerId?: boolean
@@ -1847,6 +2098,11 @@ export type SiteSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   theme?: boolean
   primaryColor?: boolean
   radius?: boolean
+  mediaEnabled?: boolean
+  mediaProvider?: boolean
+  mediaApiKey?: boolean
+  mediaMaxImages?: boolean
+  mediaMaxBytes?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   ownerId?: boolean
@@ -1875,12 +2131,17 @@ export type SiteSelectScalar = {
   theme?: boolean
   primaryColor?: boolean
   radius?: boolean
+  mediaEnabled?: boolean
+  mediaProvider?: boolean
+  mediaApiKey?: boolean
+  mediaMaxImages?: boolean
+  mediaMaxBytes?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   ownerId?: boolean
 }
 
-export type SiteOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "domain" | "siteKey" | "allowedOrigins" | "autoApprove" | "allowAnonymous" | "emailNotificationsEnabled" | "likeNotificationLimit" | "emailSubjectPrefix" | "emailLogoUrl" | "emailAccentColor" | "emailFooterText" | "smtpHost" | "smtpPort" | "smtpUser" | "smtpPass" | "smtpFrom" | "theme" | "primaryColor" | "radius" | "createdAt" | "updatedAt" | "ownerId", ExtArgs["result"]["site"]>
+export type SiteOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "domain" | "siteKey" | "allowedOrigins" | "autoApprove" | "allowAnonymous" | "emailNotificationsEnabled" | "likeNotificationLimit" | "emailSubjectPrefix" | "emailLogoUrl" | "emailAccentColor" | "emailFooterText" | "smtpHost" | "smtpPort" | "smtpUser" | "smtpPass" | "smtpFrom" | "theme" | "primaryColor" | "radius" | "mediaEnabled" | "mediaProvider" | "mediaApiKey" | "mediaMaxImages" | "mediaMaxBytes" | "createdAt" | "updatedAt" | "ownerId", ExtArgs["result"]["site"]>
 export type SiteInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   pages?: boolean | Prisma.Site$pagesArgs<ExtArgs>
@@ -1927,6 +2188,11 @@ export type $SitePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     theme: string
     primaryColor: string
     radius: number
+    mediaEnabled: boolean
+    mediaProvider: $Enums.MediaProvider
+    mediaApiKey: string | null
+    mediaMaxImages: number
+    mediaMaxBytes: number
     createdAt: Date
     updatedAt: Date
     ownerId: string
@@ -2379,6 +2645,11 @@ export interface SiteFieldRefs {
   readonly theme: Prisma.FieldRef<"Site", 'String'>
   readonly primaryColor: Prisma.FieldRef<"Site", 'String'>
   readonly radius: Prisma.FieldRef<"Site", 'Int'>
+  readonly mediaEnabled: Prisma.FieldRef<"Site", 'Boolean'>
+  readonly mediaProvider: Prisma.FieldRef<"Site", 'MediaProvider'>
+  readonly mediaApiKey: Prisma.FieldRef<"Site", 'String'>
+  readonly mediaMaxImages: Prisma.FieldRef<"Site", 'Int'>
+  readonly mediaMaxBytes: Prisma.FieldRef<"Site", 'Int'>
   readonly createdAt: Prisma.FieldRef<"Site", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Site", 'DateTime'>
   readonly ownerId: Prisma.FieldRef<"Site", 'String'>

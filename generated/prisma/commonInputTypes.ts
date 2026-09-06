@@ -195,6 +195,13 @@ export type IntFilter<$PrismaModel = never> = {
   not?: Prisma.NestedIntFilter<$PrismaModel> | number
 }
 
+export type EnumMediaProviderFilter<$PrismaModel = never> = {
+  equals?: $Enums.MediaProvider | Prisma.EnumMediaProviderFieldRefInput<$PrismaModel>
+  in?: $Enums.MediaProvider[] | Prisma.ListEnumMediaProviderFieldRefInput<$PrismaModel>
+  notIn?: $Enums.MediaProvider[] | Prisma.ListEnumMediaProviderFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumMediaProviderFilter<$PrismaModel> | $Enums.MediaProvider
+}
+
 export type BoolWithAggregatesFilter<$PrismaModel = never> = {
   equals?: boolean | Prisma.BooleanFieldRefInput<$PrismaModel>
   not?: Prisma.NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
@@ -217,6 +224,16 @@ export type IntWithAggregatesFilter<$PrismaModel = never> = {
   _sum?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedIntFilter<$PrismaModel>
   _max?: Prisma.NestedIntFilter<$PrismaModel>
+}
+
+export type EnumMediaProviderWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.MediaProvider | Prisma.EnumMediaProviderFieldRefInput<$PrismaModel>
+  in?: $Enums.MediaProvider[] | Prisma.ListEnumMediaProviderFieldRefInput<$PrismaModel>
+  notIn?: $Enums.MediaProvider[] | Prisma.ListEnumMediaProviderFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumMediaProviderWithAggregatesFilter<$PrismaModel> | $Enums.MediaProvider
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumMediaProviderFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumMediaProviderFilter<$PrismaModel>
 }
 
 export type EnumCommentStatusFilter<$PrismaModel = never> = {
@@ -453,6 +470,13 @@ export type NestedBoolFilter<$PrismaModel = never> = {
   not?: Prisma.NestedBoolFilter<$PrismaModel> | boolean
 }
 
+export type NestedEnumMediaProviderFilter<$PrismaModel = never> = {
+  equals?: $Enums.MediaProvider | Prisma.EnumMediaProviderFieldRefInput<$PrismaModel>
+  in?: $Enums.MediaProvider[] | Prisma.ListEnumMediaProviderFieldRefInput<$PrismaModel>
+  notIn?: $Enums.MediaProvider[] | Prisma.ListEnumMediaProviderFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumMediaProviderFilter<$PrismaModel> | $Enums.MediaProvider
+}
+
 export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
   equals?: boolean | Prisma.BooleanFieldRefInput<$PrismaModel>
   not?: Prisma.NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
@@ -486,6 +510,16 @@ export type NestedFloatFilter<$PrismaModel = never> = {
   gt?: number | Prisma.FloatFieldRefInput<$PrismaModel>
   gte?: number | Prisma.FloatFieldRefInput<$PrismaModel>
   not?: Prisma.NestedFloatFilter<$PrismaModel> | number
+}
+
+export type NestedEnumMediaProviderWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.MediaProvider | Prisma.EnumMediaProviderFieldRefInput<$PrismaModel>
+  in?: $Enums.MediaProvider[] | Prisma.ListEnumMediaProviderFieldRefInput<$PrismaModel>
+  notIn?: $Enums.MediaProvider[] | Prisma.ListEnumMediaProviderFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumMediaProviderWithAggregatesFilter<$PrismaModel> | $Enums.MediaProvider
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumMediaProviderFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumMediaProviderFilter<$PrismaModel>
 }
 
 export type NestedEnumCommentStatusFilter<$PrismaModel = never> = {

@@ -155,6 +155,11 @@ export const SiteScalarFieldEnum = {
   theme: 'theme',
   primaryColor: 'primaryColor',
   radius: 'radius',
+  mediaEnabled: 'mediaEnabled',
+  mediaProvider: 'mediaProvider',
+  mediaApiKey: 'mediaApiKey',
+  mediaMaxImages: 'mediaMaxImages',
+  mediaMaxBytes: 'mediaMaxBytes',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   ownerId: 'ownerId'
@@ -197,6 +202,7 @@ export const CommentScalarFieldEnum = {
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   editedAt: 'editedAt',
+  imageUrls: 'imageUrls',
   pageId: 'pageId',
   parentId: 'parentId',
   commenterId: 'commenterId'

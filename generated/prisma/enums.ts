@@ -43,3 +43,12 @@ export const InviteStatus = {
 } as const
 
 export type InviteStatus = (typeof InviteStatus)[keyof typeof InviteStatus]
+
+
+export const MediaProvider = {
+  IMGBB: 'IMGBB',
+  CATBOX: 'CATBOX',
+  IMGUR: 'IMGUR'
+} as const
+
+export type MediaProvider = (typeof MediaProvider)[keyof typeof MediaProvider]

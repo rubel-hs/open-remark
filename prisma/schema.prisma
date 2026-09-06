@@ -33,6 +33,12 @@ enum InviteStatus {
   REVOKED
 }
 
+enum MediaProvider {
+  IMGBB
+  CATBOX
+  IMGUR
+}
+
 // ─── Auth (NextAuth / Auth.js required tables) ────────────────────────────────
 
 model User {
@@ -111,6 +117,11 @@ model Site {
   theme          String   @default("AUTO")
   primaryColor   String   @default("#0891b2")
   radius         Int      @default(8)
+  mediaEnabled   Boolean       @default(false)
+  mediaProvider  MediaProvider @default(IMGBB)
+  mediaApiKey    String?
+  mediaMaxImages Int           @default(4)
+  mediaMaxBytes  Int           @default(5242880)
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 
@@ -163,6 +174,7 @@ model Comment {
   createdAt          DateTime      @default(now())
   updatedAt          DateTime      @updatedAt
   editedAt           DateTime?
+  imageUrls String[] @default([])
 
   pageId String
   page   Page   @relation(fields: [pageId], references: [id], onDelete: Cascade)
