@@ -36,6 +36,7 @@ export function useCreateSite() {
 // it as a JSON-stringified array, but the PATCH body must send a real array.
 type UpdateSiteInput = Partial<Omit<Site, "allowedOrigins">> & {
   allowedOrigins?: string[]
+  mediaApiKey?: string | null
 }
 
 export function useUpdateSite(id: string) {

@@ -57,6 +57,7 @@ type CommentStatus = (typeof COMMENT_STATUS)[keyof typeof COMMENT_STATUS]
 type Comment = {
   id: string
   body: string
+  imageUrls: string[]
   commenter: {
     name: string
     email: string
@@ -312,6 +313,20 @@ export function CommentsTable({ comments, listKey }: Props) {
                         ? "Comment Removed"
                         : comment.body}
                     </p>
+                    {comment.imageUrls?.length > 0 && (
+                      <div className="mt-2 flex gap-1.5">
+                        {comment.imageUrls.map((u) => (
+                          <a key={u} href={u} target="_blank" rel="noreferrer">
+                            <img
+                              src={u}
+                              alt=""
+                              loading="lazy"
+                              className="size-10 rounded-md border border-border object-cover"
+                            />
+                          </a>
+                        ))}
+                      </div>
+                    )}
                   </TableCell>
                   <TableCell>
                     {comment.page.url ? (

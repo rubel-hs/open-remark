@@ -38,6 +38,7 @@ export type SettingsSection =
   | "general"
   | "install"
   | "appearance"
+  | "media"
   | "transfer"
   | "email"
   | "danger"
@@ -49,6 +50,7 @@ export const SETTINGS_SECTION_CAPABILITY: Record<
   general: "MANAGE_SETTINGS",
   install: "MANAGE_SETTINGS",
   appearance: "MANAGE_SETTINGS",
+  media: "MANAGE_SETTINGS",
   transfer: "TRANSFER_SITE",
   email: "MANAGE_EMAIL_SETTINGS",
   danger: "DELETE_SITE",

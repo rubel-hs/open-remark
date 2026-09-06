@@ -6,6 +6,7 @@ import { InstallSnippetSection } from "./install-snippet-section"
 import { AppearanceSection } from "./appearance-section"
 import { TransferSection } from "./transfer-section"
 import { EmailNotificationsSection } from "./email-notifications-section"
+import { MediaSection } from "./media-section"
 import { DangerZoneSection } from "./danger-zone-section"
 import { siteCan, SETTINGS_SECTION_CAPABILITY } from "@/lib/permissions"
 import type { SiteRole, SettingsSection } from "@/lib/permissions"
@@ -27,6 +28,7 @@ export function SiteSettingsForm({ site: initialSite, role }: Props) {
       {can("general") && <GeneralSection site={site} />}
       {can("install") && <InstallSnippetSection siteKey={site.siteKey} />}
       {can("appearance") && <AppearanceSection site={site} />}
+      {can("media") && <MediaSection site={site} />}
       {can("transfer") && <TransferSection siteId={site.id} />}
       {can("email") && <EmailNotificationsSection site={site} />}
       {can("danger") && (
