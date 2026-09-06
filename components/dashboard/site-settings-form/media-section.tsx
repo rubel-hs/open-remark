@@ -192,7 +192,7 @@ export function MediaSection({ site }: Props) {
                 type="number"
                 min={0.25}
                 max={32}
-                step={0.5}
+                step="any"
                 value={mediaMaxBytesMB}
                 onChange={(e) => setMediaMaxBytesMB(e.target.value)}
               />
