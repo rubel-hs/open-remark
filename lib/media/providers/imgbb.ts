@@ -26,12 +26,17 @@ export async function uploadToImgbb(
   const url = `${endpoints.imgbb}?key=${encodeURIComponent(input.apiKey)}`
   const res = await postWithSingleRetry(url, { method: "POST", body: form })
   if (!res.ok) throw new ApiError("Image upload failed, try again", 502)
-  const json = (await res.json()) as ImgbbResponse
-  if (!json.data?.url) {
+  let json: ImgbbResponse
+  try {
+    json = (await res.json()) as ImgbbResponse
+  } catch {
+    throw new ApiError("Image host rejected the upload", 502)
+  }
+  if (!json?.data?.url) {
     throw new ApiError("Image host rejected the upload", 502)
   }
   return {
-    url: json.data.url,
+    url: json.data.url ?? json.data.display_url,
     thumbUrl: json.data.thumb?.url,
     deleteUrl: json.data.delete_url,
   }

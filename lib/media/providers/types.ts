@@ -25,8 +25,24 @@ export async function postWithSingleRetry(
   url: string,
   init: RequestInit
 ): Promise<Response> {
-  let res = await fetch(url, init)
-  if (res.status >= 500) res = await fetch(url, init)
+  let res: Response
+  try {
+    res = await fetch(url, init)
+  } catch {
+    try {
+      res = await fetch(url, init)
+    } catch {
+      throw new ApiError("Image upload failed, try again", 502)
+    }
+    return res
+  }
+  if (res.status >= 500) {
+    try {
+      res = await fetch(url, init)
+    } catch {
+      throw new ApiError("Image upload failed, try again", 502)
+    }
+  }
   return res
 }
 
@@ -42,6 +58,8 @@ export async function uploadToProvider(
     case "CATBOX":
       return uploadToCatbox(input)
     case "IMGUR":
-      return uploadToImgur(input)
+      return uploadToImgur()
+    default:
+      throw new ApiError("Image upload failed, try again", 502)
   }
 }
