@@ -8,6 +8,7 @@ export const CreateCommentSchema = z.object({
   url: z.string().url().optional(),
   parentId: z.string().cuid().optional(),
   replyToId: z.string().cuid().optional(),
+  imageUrls: z.array(z.string().url()).max(4).optional(),
 })
 
 export const UpdateCommentStatusSchema = z.object({
@@ -23,10 +24,17 @@ export const UpdateCommentSchema = z
   .object({
     body: z.string().min(1).max(5000).optional(),
     status: z.nativeEnum(CommentStatus).optional(),
+    imageUrls: z.array(z.string().url()).max(4).optional(),
   })
-  .refine((data) => data.body !== undefined || data.status !== undefined, {
-    message: "Either body or status is required",
-  })
+  .refine(
+    (data) =>
+      data.body !== undefined ||
+      data.status !== undefined ||
+      data.imageUrls !== undefined,
+    {
+      message: "Either body or status is required",
+    }
+  )
 
 export type CreateCommentInput = z.infer<typeof CreateCommentSchema>
 export type UpdateCommentStatusInput = z.infer<typeof UpdateCommentStatusSchema>
