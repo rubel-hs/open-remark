@@ -7,6 +7,7 @@ import {
   deleteComment,
 } from "@/lib/services/comment-service"
 import { isCommenterBannedOnSite } from "@/lib/services/user-service"
+import { assertImageUrlsAllowed } from "@/lib/services/media-service"
 import { verifyWidgetToken } from "@/lib/auth-widget"
 import { corsHeaders } from "@/lib/cors"
 import { db } from "@/lib/db"
@@ -89,6 +90,7 @@ export async function PATCH(
         throw new ApiError("Image uploads are disabled on this site", 403)
       if (parsed.data.imageUrls.length > siteCheck.page.site.mediaMaxImages)
         throw new ApiError("Too many images", 400)
+      assertImageUrlsAllowed(parsed.data.imageUrls)
       updated = await updateCommentImages(id, parsed.data.imageUrls)
     }
 

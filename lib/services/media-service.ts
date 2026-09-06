@@ -6,6 +6,17 @@ import {
 } from "@/lib/media/providers/types"
 import type { MediaProvider } from "@/generated/prisma/client"
 
+const ALLOWED_IMAGE_HOSTS = ["ibb.co", "catbox.moe"]
+
+export function assertImageUrlsAllowed(imageUrls: string[]) {
+  for (const u of imageUrls) {
+    const allowed = ALLOWED_IMAGE_HOSTS.some((h) =>
+      new URL(u).hostname.toLowerCase().endsWith(h)
+    )
+    if (!allowed) throw new ApiError("Image host not allowed", 400)
+  }
+}
+
 export async function uploadMedia(input: {
   site: {
     id: string

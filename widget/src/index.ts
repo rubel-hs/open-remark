@@ -146,6 +146,7 @@ class ZeonWidget {
   private htmlObserver: MutationObserver | null = null
   private mediaForms = new Map<string, PendingUpload[]>()
   private editImageUrls: string[] | null = null
+  private editImageSnapshot: string[] | null = null
   private lightbox: HTMLElement | null = null
   private lightboxImg: HTMLImageElement | null = null
   private lightboxOpener: HTMLElement | null = null
@@ -325,6 +326,8 @@ class ZeonWidget {
     this.replyingToId = null
     this.isEditingId = null
     this.editImageUrls = null
+    this.editImageSnapshot = null
+    this.mediaForms.clear()
     this.render()
   }
 
@@ -459,6 +462,8 @@ class ZeonWidget {
     this.replyingToId = null
     this.isEditingId = null
     this.editImageUrls = null
+    this.editImageSnapshot = null
+    this.mediaForms.clear()
     this.auth = {
       status: "error",
       message: "Your session expired. Please sign in again.",
@@ -518,6 +523,7 @@ class ZeonWidget {
     if (this.auth.status !== "authenticated") return
     this.isEditingId = comment.id
     this.editImageUrls = [...(comment.imageUrls ?? [])]
+    this.editImageSnapshot = [...(comment.imageUrls ?? [])]
     this.patchComment(comment.id)
   }
 
@@ -525,6 +531,7 @@ class ZeonWidget {
     const prev = this.isEditingId
     this.isEditingId = null
     this.editImageUrls = null
+    this.editImageSnapshot = null
     if (prev) {
       this.patchComment(prev)
     } else {
@@ -577,12 +584,17 @@ class ZeonWidget {
     this.isSubmitting = true
     this.render()
     try {
+      const sendImageUrls =
+        (this.editImageSnapshot?.length ?? 0) > 0 ||
+        (this.editImageUrls?.length ?? 0) > 0
+          ? (this.editImageUrls ?? undefined)
+          : undefined
       const updated = await updateComment(
         this.config.appUrl,
         this.auth.token,
         commentId,
         body,
-        this.editImageUrls ?? undefined
+        sendImageUrls
       )
       const target = this.findComment(commentId)
       if (target) {
@@ -592,6 +604,7 @@ class ZeonWidget {
       }
       this.isEditingId = null
       this.editImageUrls = null
+      this.editImageSnapshot = null
     } catch (err: unknown) {
       this.handleApiError(err, "Failed to update")
     } finally {

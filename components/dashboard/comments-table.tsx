@@ -315,16 +315,28 @@ export function CommentsTable({ comments, listKey }: Props) {
                     </p>
                     {comment.imageUrls?.length > 0 && (
                       <div className="mt-2 flex gap-1.5">
-                        {comment.imageUrls.map((u) => (
-                          <a key={u} href={u} target="_blank" rel="noreferrer">
+                        {comment.imageUrls.map((u) => {
+                          const img = (
                             <img
                               src={u}
                               alt=""
                               loading="lazy"
                               className="size-10 rounded-md border border-border object-cover"
                             />
-                          </a>
-                        ))}
+                          )
+                          return /^https:\/\//i.test(u) ? (
+                            <a
+                              key={u}
+                              href={u}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              {img}
+                            </a>
+                          ) : (
+                            <span key={u}>{img}</span>
+                          )
+                        })}
                       </div>
                     )}
                   </TableCell>

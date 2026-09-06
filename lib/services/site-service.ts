@@ -193,6 +193,19 @@ export async function updateSite(
         ...(input.smtpUser !== undefined && { smtpUser: input.smtpUser }),
         ...(input.smtpPass !== undefined && { smtpPass: input.smtpPass }),
         ...(input.smtpFrom !== undefined && { smtpFrom: input.smtpFrom }),
+        ...(typeof input.mediaEnabled === "boolean" && {
+          mediaEnabled: input.mediaEnabled,
+        }),
+        ...(input.mediaProvider && { mediaProvider: input.mediaProvider }),
+        ...(input.mediaApiKey !== undefined && {
+          mediaApiKey: input.mediaApiKey,
+        }),
+        ...(typeof input.mediaMaxImages === "number" && {
+          mediaMaxImages: input.mediaMaxImages,
+        }),
+        ...(typeof input.mediaMaxBytes === "number" && {
+          mediaMaxBytes: input.mediaMaxBytes,
+        }),
       },
     })
   )
@@ -225,9 +238,11 @@ export async function transferSite(
       create: { siteId, userId: newOwner.id, role: "SITE_OWNER" },
       update: { role: "SITE_OWNER" },
     })
-    return tx.site.update({
-      where: { id: siteId },
-      data: { ownerId: newOwner.id },
-    })
+    return stripSiteSecrets(
+      await tx.site.update({
+        where: { id: siteId },
+        data: { ownerId: newOwner.id },
+      })
+    )
   })
 }

@@ -17,6 +17,9 @@ export async function OPTIONS(req: NextRequest) {
   return new NextResponse(null, { status: 204, headers: corsHeaders(origin) })
 }
 
+// NOTE: uploaded-but-never-attached bytes live permanently against the site
+// key (counted as provider usage, no DB row to GC). Uploads are rate-limited
+// but total orphan volume is unbounded — fast-follow: upload tokens or GC sweep.
 export async function POST(req: NextRequest) {
   try {
     const ip = req.headers.get("x-forwarded-for") ?? "unknown"
@@ -27,6 +30,13 @@ export async function POST(req: NextRequest) {
       throw new ApiError("Unauthorized", 401)
     const payload = await verifyWidgetToken(authHeader.slice(7))
     if (!payload) throw new ApiError("Invalid token", 401)
+    // Bound memory before buffering: reject absurd bodies before formData()
+    // materializes them. 34MB = 32MB provider ceiling + multipart slack.
+    // The per-site mediaMaxBytes check in uploadMedia stays authoritative
+    // (incl. chunked / no-length bodies).
+    const contentLength = Number(req.headers.get("content-length") ?? "0")
+    if (contentLength > 34 * 1024 * 1024)
+      throw new ApiError("Image is too large", 413)
     const form = await req.formData()
     const siteKey = form.get("siteKey")
     const file = form.get("file")

@@ -42,8 +42,8 @@ export async function optimizeImage(
   bytes: Buffer,
   kind: ImageKind
 ): Promise<{ buffer: Buffer; mime: string }> {
-  // `animated: true` preserves every frame of animated GIF/WebP input, so the
-  // stills branch and the animated branch are the same call.
+  // `animated: kind === "gif"` preserves every frame of animated GIF input;
+  // still WebP input is flattened to its first frame.
   const encoded = await sharp(bytes, { animated: kind === "gif" })
     .resize({
       width: MAX_EDGE,
