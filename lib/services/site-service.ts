@@ -25,6 +25,13 @@ const EMAIL_SETTING_FIELDS = [
   "smtpFrom",
 ] as const satisfies readonly (keyof UpdateSiteInput)[]
 
+export function stripSiteSecrets<T extends { mediaApiKey?: string | null }>(
+  site: T
+): Omit<T, "mediaApiKey"> & { hasMediaApiKey: boolean } {
+  const { mediaApiKey, ...rest } = site
+  return { ...rest, hasMediaApiKey: mediaApiKey != null && mediaApiKey !== "" }
+}
+
 export async function getSiteCountForUser(userId: string) {
   return db.site.count({ where: { members: { some: { userId } } } })
 }
@@ -85,7 +92,7 @@ export async function getSitesForUser(userId: string) {
     const dayMap = activityBySite.get(site.id) ?? new Map()
     const { members, ...rest } = site
     return {
-      ...rest,
+      ...stripSiteSecrets(rest),
       role: members[0].role,
       totalComments: site.pages.reduce((acc, p) => acc + p._count.comments, 0),
       pendingComments: site.pages.reduce(
@@ -148,45 +155,47 @@ export async function updateSite(
   ) {
     throw new ApiError("Forbidden", 403)
   }
-  return db.site.update({
-    where: { id: siteId },
-    data: {
-      ...(input.name && { name: input.name }),
-      ...(input.domain && { domain: input.domain }),
-      ...(typeof input.autoApprove === "boolean" && {
-        autoApprove: input.autoApprove,
-      }),
-      ...(input.allowedOrigins && {
-        allowedOrigins: JSON.stringify(input.allowedOrigins),
-      }),
-      ...(input.theme && { theme: input.theme }),
-      ...(input.primaryColor && { primaryColor: input.primaryColor }),
-      ...(typeof input.radius === "number" && { radius: input.radius }),
-      ...(typeof input.emailNotificationsEnabled === "boolean" && {
-        emailNotificationsEnabled: input.emailNotificationsEnabled,
-      }),
-      ...(typeof input.likeNotificationLimit === "number" && {
-        likeNotificationLimit: input.likeNotificationLimit,
-      }),
-      ...(input.emailSubjectPrefix !== undefined && {
-        emailSubjectPrefix: input.emailSubjectPrefix,
-      }),
-      ...(input.emailLogoUrl !== undefined && {
-        emailLogoUrl: input.emailLogoUrl,
-      }),
-      ...(input.emailAccentColor !== undefined && {
-        emailAccentColor: input.emailAccentColor,
-      }),
-      ...(input.emailFooterText !== undefined && {
-        emailFooterText: input.emailFooterText,
-      }),
-      ...(input.smtpHost !== undefined && { smtpHost: input.smtpHost }),
-      ...(input.smtpPort !== undefined && { smtpPort: input.smtpPort }),
-      ...(input.smtpUser !== undefined && { smtpUser: input.smtpUser }),
-      ...(input.smtpPass !== undefined && { smtpPass: input.smtpPass }),
-      ...(input.smtpFrom !== undefined && { smtpFrom: input.smtpFrom }),
-    },
-  })
+  return stripSiteSecrets(
+    await db.site.update({
+      where: { id: siteId },
+      data: {
+        ...(input.name && { name: input.name }),
+        ...(input.domain && { domain: input.domain }),
+        ...(typeof input.autoApprove === "boolean" && {
+          autoApprove: input.autoApprove,
+        }),
+        ...(input.allowedOrigins && {
+          allowedOrigins: JSON.stringify(input.allowedOrigins),
+        }),
+        ...(input.theme && { theme: input.theme }),
+        ...(input.primaryColor && { primaryColor: input.primaryColor }),
+        ...(typeof input.radius === "number" && { radius: input.radius }),
+        ...(typeof input.emailNotificationsEnabled === "boolean" && {
+          emailNotificationsEnabled: input.emailNotificationsEnabled,
+        }),
+        ...(typeof input.likeNotificationLimit === "number" && {
+          likeNotificationLimit: input.likeNotificationLimit,
+        }),
+        ...(input.emailSubjectPrefix !== undefined && {
+          emailSubjectPrefix: input.emailSubjectPrefix,
+        }),
+        ...(input.emailLogoUrl !== undefined && {
+          emailLogoUrl: input.emailLogoUrl,
+        }),
+        ...(input.emailAccentColor !== undefined && {
+          emailAccentColor: input.emailAccentColor,
+        }),
+        ...(input.emailFooterText !== undefined && {
+          emailFooterText: input.emailFooterText,
+        }),
+        ...(input.smtpHost !== undefined && { smtpHost: input.smtpHost }),
+        ...(input.smtpPort !== undefined && { smtpPort: input.smtpPort }),
+        ...(input.smtpUser !== undefined && { smtpUser: input.smtpUser }),
+        ...(input.smtpPass !== undefined && { smtpPass: input.smtpPass }),
+        ...(input.smtpFrom !== undefined && { smtpFrom: input.smtpFrom }),
+      },
+    })
+  )
 }
 
 export async function deleteSite(siteId: string, userId: string) {

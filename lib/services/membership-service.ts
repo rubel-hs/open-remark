@@ -1,5 +1,6 @@
 import { db } from "@/lib/db"
 import { ApiError } from "@/lib/api/error"
+import { stripSiteSecrets } from "@/lib/services/site-service"
 import {
   siteCan,
   ROLE_GRANT_CAPABILITY,
@@ -19,7 +20,7 @@ export async function getSiteForMember(siteId: string, userId: string) {
   if (!membership) throw new ApiError("Site not found", 404)
   const site = await db.site.findUnique({ where: { id: siteId } })
   if (!site) throw new ApiError("Site not found", 404)
-  return { site, role: membership.role }
+  return { site: stripSiteSecrets(site), role: membership.role }
 }
 
 /** Guard a capability; returns the loaded site + membership. */
@@ -35,7 +36,7 @@ export async function requireSiteAccess(
   }
   const site = await db.site.findUnique({ where: { id: siteId } })
   if (!site) throw new ApiError("Site not found", 404)
-  return { site, membership }
+  return { site: stripSiteSecrets(site), membership }
 }
 
 export async function listMembers(siteId: string) {
