@@ -14,15 +14,22 @@ const ImageUrlsSchema = z
   .max(10)
   .optional()
 
-export const CreateCommentSchema = z.object({
-  body: z.string().min(1).max(5000),
-  siteKey: z.string().min(1),
-  slug: z.string().min(1),
-  url: z.string().url().optional(),
-  parentId: z.string().cuid().optional(),
-  replyToId: z.string().cuid().optional(),
-  imageUrls: ImageUrlsSchema,
-})
+export const CreateCommentSchema = z
+  .object({
+    body: z.string().max(5000),
+    siteKey: z.string().min(1),
+    slug: z.string().min(1),
+    url: z.string().url().optional(),
+    parentId: z.string().cuid().optional(),
+    replyToId: z.string().cuid().optional(),
+    imageUrls: ImageUrlsSchema,
+  })
+  .refine(
+    (data) => data.body.trim() !== "" || (data.imageUrls?.length ?? 0) > 0,
+    {
+      message: "Comment must have text or images",
+    }
+  )
 
 export const UpdateCommentStatusSchema = z.object({
   status: z.nativeEnum(CommentStatus),
@@ -35,7 +42,7 @@ export const BulkUpdateCommentStatusSchema = z.object({
 
 export const UpdateCommentSchema = z
   .object({
-    body: z.string().min(1).max(5000).optional(),
+    body: z.string().max(5000).optional(),
     status: z.nativeEnum(CommentStatus).optional(),
     imageUrls: ImageUrlsSchema,
   })

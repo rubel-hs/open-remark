@@ -232,7 +232,9 @@ export async function createComment(
   autoApprove: boolean
 ) {
   const sanitized = sanitizeBody(data.body)
-  if (!sanitized) throw new ApiError("Comment body is empty", 400)
+  const imageUrls = data.imageUrls ?? []
+  if (!sanitized && imageUrls.length === 0)
+    throw new ApiError("Comment must have text or images", 400)
 
   const site = await db.site.findUniqueOrThrow({
     where: { siteKey: data.siteKey },
@@ -255,7 +257,6 @@ export async function createComment(
     },
   })
 
-  const imageUrls = data.imageUrls ?? []
   if (imageUrls.length > 0) {
     if (!site.mediaEnabled)
       throw new ApiError("Image uploads are disabled on this site", 403)
@@ -426,9 +427,14 @@ export async function createComment(
   }
 }
 
-export async function updateCommentBody(commentId: string, body: string) {
+export async function updateCommentBody(
+  commentId: string,
+  body: string,
+  opts?: { allowEmpty?: boolean }
+) {
   const sanitized = sanitizeBody(body)
-  if (!sanitized) throw new ApiError("Comment body is empty", 400)
+  if (!sanitized && !opts?.allowEmpty)
+    throw new ApiError("Comment body is empty", 400)
 
   const raw = await db.comment.update({
     where: { id: commentId },

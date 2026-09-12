@@ -739,7 +739,8 @@ class ZeonWidget {
       return
     }
     const len = textarea.value.trim().length
-    submit.disabled = len === 0 || len > MAX_CHARS_COMMENT
+    const ready = pending.some((p) => p.status === "ready")
+    submit.disabled = (len === 0 && !ready) || len > MAX_CHARS_COMMENT
   }
 
   private buildMediaHooks(formKey: string): MediaPickerHooks | null {

@@ -98,7 +98,8 @@ export function renderImageGallery(
   onOpen: (url: string, opener: HTMLElement) => void
 ): HTMLElement {
   const gallery = document.createElement("div")
-  gallery.className = "z-gallery"
+  gallery.className =
+    "z-gallery" + (urls.length === 1 ? " z-gallery-single" : "")
   for (const url of urls) {
     const btn = document.createElement("button")
     btn.className = "z-gallery-thumb"
@@ -167,6 +168,21 @@ function hasUploadingMedia(media?: MediaPickerHooks | null): boolean {
   return !!media?.pending.some((p) => p.status === "uploading")
 }
 
+function hasReadyMedia(media?: MediaPickerHooks | null): boolean {
+  return !!media?.pending.some((p) => p.status === "ready")
+}
+
+// True when the form carries submittable images: ready uploads for picker
+// forms (tracked by status — uploading/error thumbs don't count), committed
+// thumbnails still in the DOM for edit forms (which have no picker).
+function hasAttachedImages(
+  wrap: HTMLElement,
+  media?: MediaPickerHooks | null
+): boolean {
+  if (media) return hasReadyMedia(media)
+  return wrap.querySelectorAll(".z-media-strip .z-thumb").length > 0
+}
+
 function renderUploadHint(visible: boolean): HTMLElement {
   const hint = document.createElement("span")
   hint.className = "z-upload-hint"
@@ -226,6 +242,12 @@ function renderInlineForm(cfg: InlineFormConfig): HTMLElement {
       remove.addEventListener("click", () => {
         cfg.editImages?.onRemove(targetUrl)
         thumbEl.remove()
+        submitBtn.disabled =
+          cfg.isSubmitting ||
+          (textarea.value.trim().length === 0 &&
+            !hasAttachedImages(wrap, cfg.media)) ||
+          textarea.value.length > cfg.maxChars ||
+          hasUploadingMedia(cfg.media)
       })
       thumb.appendChild(remove)
       editStrip.appendChild(thumb)
@@ -263,7 +285,9 @@ function renderInlineForm(cfg: InlineFormConfig): HTMLElement {
     : cfg.submitLabel
   submitBtn.disabled =
     cfg.isSubmitting ||
-    cfg.initialValue.length === 0 ||
+    (cfg.initialValue.trim().length === 0 &&
+      !hasAttachedImages(wrap, cfg.media)) ||
+    cfg.initialValue.length > cfg.maxChars ||
     hasUploadingMedia(cfg.media)
   submitBtn.addEventListener("click", async () => {
     if (hasUploadingMedia(cfg.media)) {
@@ -272,7 +296,10 @@ function renderInlineForm(cfg: InlineFormConfig): HTMLElement {
       return
     }
     const body = textarea.value.trim()
-    if (!body || body.length > cfg.maxChars) {
+    if (
+      (body.length === 0 && !hasAttachedImages(wrap, cfg.media)) ||
+      body.length > cfg.maxChars
+    ) {
       textarea.focus()
       return
     }
@@ -300,7 +327,10 @@ function renderInlineForm(cfg: InlineFormConfig): HTMLElement {
     const uploading = hasUploadingMedia(cfg.media)
     uploadHint.style.display = uploading ? "" : "none"
     submitBtn.disabled =
-      cfg.isSubmitting || len === 0 || len > cfg.maxChars || uploading
+      cfg.isSubmitting ||
+      (len === 0 && !hasAttachedImages(wrap, cfg.media)) ||
+      len > cfg.maxChars ||
+      uploading
   })
 
   setTimeout(() => textarea.focus(), 0)
@@ -921,7 +951,10 @@ export function renderCommentForm(
     const uploading = hasUploadingMedia(media)
     mainUploadHint.style.display = uploading ? "" : "none"
     submitBtn.disabled =
-      isSubmitting || len === 0 || len > MAX_CHARS_COMMENT || uploading
+      isSubmitting ||
+      (len === 0 && !hasReadyMedia(media)) ||
+      len > MAX_CHARS_COMMENT ||
+      uploading
   })
 
   form.appendChild(textarea)
@@ -952,7 +985,8 @@ export function renderCommentForm(
       : "Post comment"
   submitBtn.disabled =
     isSubmitting ||
-    textarea.value.trim().length === 0 ||
+    (textarea.value.trim().length === 0 && !hasReadyMedia(media)) ||
+    textarea.value.length > MAX_CHARS_COMMENT ||
     hasUploadingMedia(media)
   submitBtn.addEventListener("click", async () => {
     if (hasUploadingMedia(media)) {
@@ -961,7 +995,10 @@ export function renderCommentForm(
       return
     }
     const body = textarea.value.trim()
-    if (!body || body.length > MAX_CHARS_COMMENT) {
+    if (
+      (body.length === 0 && !hasReadyMedia(media)) ||
+      body.length > MAX_CHARS_COMMENT
+    ) {
       textarea.focus()
       return
     }

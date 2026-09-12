@@ -1123,15 +1123,15 @@
 
 /* ─── Image gallery ──────────────────────────────────────────────────────── */
 .z-gallery {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 8px;
   margin-top: 8px;
 }
 
 .z-gallery-thumb {
-  width: 72px;
-  height: 72px;
+  aspect-ratio: 4 / 3;
+  min-height: 0;
   border-radius: var(--z-radius-sm);
   border: 1px solid var(--z-border);
   overflow: hidden;
@@ -1146,6 +1146,20 @@
   height: 100%;
   object-fit: cover;
   display: block;
+}
+
+.z-gallery-single {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.z-gallery-single .z-gallery-thumb {
+  aspect-ratio: auto;
+  max-height: 480px;
+}
+
+.z-gallery-single .z-gallery-thumb img {
+  object-fit: contain;
+  max-height: 480px;
 }
 
 .z-gallery-thumb:hover {

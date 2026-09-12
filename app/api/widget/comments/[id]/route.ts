@@ -54,7 +54,12 @@ export async function PATCH(
     // Verify ownership
     const comment = await db.comment.findUnique({
       where: { id },
-      select: { commenterId: true, page: { select: { siteId: true } } },
+      select: {
+        commenterId: true,
+        body: true,
+        imageUrls: true,
+        page: { select: { siteId: true } },
+      },
     })
     if (!comment) throw new ApiError("Comment not found", 404)
     if (comment.commenterId !== payload.commenterId) {
@@ -75,6 +80,12 @@ export async function PATCH(
     }
 
     let updated
+    // The resulting comment must keep text or images — an edit may clear
+    // the body only when images remain (and vice versa).
+    const effectiveBody = parsed.data.body ?? comment.body
+    const effectiveImages = parsed.data.imageUrls ?? comment.imageUrls ?? []
+    if (effectiveBody.trim() === "" && effectiveImages.length === 0)
+      throw new ApiError("Comment must have text or images", 400)
     if (parsed.data.imageUrls !== undefined) {
       const siteCheck = await db.comment.findUnique({
         where: { id },
@@ -95,7 +106,9 @@ export async function PATCH(
     }
 
     if (parsed.data.body !== undefined) {
-      updated = await updateCommentBody(id, parsed.data.body)
+      updated = await updateCommentBody(id, parsed.data.body, {
+        allowEmpty: true,
+      })
     }
 
     if (updated !== undefined) {

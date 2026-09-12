@@ -84,11 +84,11 @@ New widget route following the widget pattern: `OPTIONS` preflight,
 
 ## 7. Comments API changes
 
-- `CreateCommentSchema` gains `imageUrls: z.array(z.string().url()).max(10).optional()`; `createComment` throws 403 when images attached but `mediaEnabled` is false, and caps count at `site.mediaMaxImages`. Images inherit the comment's `PENDING/APPROVED` lifecycle — no separate moderation queue.
+- `CreateCommentSchema` gains `imageUrls` (https-only URLs, max 10, optional) and allows an empty `body` when ≥1 image is attached ("text or images" refine); `createComment` throws 403 when images attached but `mediaEnabled` is false, and caps count at `site.mediaMaxImages`. Images inherit the comment's `PENDING/APPROVED` lifecycle — no separate moderation queue.
 - All comment selectors/serializers (`buildCommentSelect`, `getApprovedCommentsForPage`, create/update/delete returns) include `imageUrls`.
 - GET `/api/widget/comments` config block gains `mediaEnabled`, `mediaMaxImages`, `mediaMaxBytes` so the widget renders the image button only when allowed.
 - `UpdateSiteSchema` gains the five media fields (`mediaMaxImages`: int 1–10, default 4, `mediaMaxBytes`: positive int ≤ 32 MB provider ceiling, `mediaProvider`: native enum, `mediaApiKey`: nullable string); the admin PATCH writes `mediaApiKey` but no GET serializes it (password semantics: UI shows saved/replace/clear, never the value).
-- Edit comment: images removable, not addable. Delete: soft-delete unchanged; gallery hidden on DELETED/SPAM; provider `deleteUrl` fired best-effort, failures swallowed (free hosts are sticky).
+- Edit comment: images removable, not addable; clearing the text is allowed while images remain (the edit route 400s only a result with neither text nor images). Delete: soft-delete unchanged; gallery hidden on DELETED/SPAM; provider `deleteUrl` fired best-effort, failures swallowed (free hosts are sticky).
 
 ## 8. Dashboard UI
 
@@ -104,8 +104,10 @@ renders thumbnails. No new Radix imports; token utilities only, no hardcoded col
 Image button appears in the main form and inline reply forms only when
 `config.mediaEnabled`. Client pre-checks MIME/size, uploads files one-by-one
 with per-thumb progress, preview strip with remove-before-post; submit sends
-`imageUrls` with `postComment`. Rendered comments show a thumbnail row under the
-body; click opens a lightbox (Esc closes, focus-trapped, keyboard accessible).
+`imageUrls` with `postComment` and is enabled with text or ready uploads
+(image-only comments send `body: ""`). Rendered comments show a 2-column image
+grid under the body (a lone image spans full width, capped at ~480px height);
+click opens a lightbox (Esc closes, focus-trapped, keyboard accessible).
 Types: `CommentData.imageUrls: string[]`, `WidgetThemeConfig` gains the three
 media flags. No new `__DEFINE__` constants needed — limits arrive from the server.
 
