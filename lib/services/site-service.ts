@@ -109,6 +109,17 @@ export async function getSiteByIdForUser(siteId: string, userId: string) {
   return site
 }
 
+/** Returns the raw media provider key — only for explicit reveal flows. Never include in list/detail serializers. */
+export async function getSiteMediaKey(siteId: string, userId: string) {
+  await requireSiteAccess(siteId, userId, "MANAGE_SETTINGS")
+  const site = await db.site.findUnique({
+    where: { id: siteId },
+    select: { mediaApiKey: true },
+  })
+  if (!site) throw new ApiError("Site not found", 404)
+  return site.mediaApiKey
+}
+
 export async function getSiteBySiteKey(siteKey: string) {
   const site = await db.site.findUnique({ where: { siteKey } })
   if (!site) throw new ApiError("Site not found", 404)

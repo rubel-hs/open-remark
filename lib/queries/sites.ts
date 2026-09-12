@@ -80,6 +80,21 @@ export function useDeleteSite(id: string) {
   })
 }
 
+// One-shot reveal of the stored media provider key (eye button). Disabled by
+// default — call refetch() on demand. Never cached (secrets don't belong in
+// the query cache); errors surfaced by the caller, not the global toast.
+export function useSiteMediaKey(id: string) {
+  return useQuery({
+    queryKey: ["sites", id, "media-key"],
+    queryFn: () =>
+      apiFetch<{ apiKey: string | null }>(`/api/v1/sites/${id}/media-key`),
+    enabled: false,
+    staleTime: 0,
+    gcTime: 0,
+    meta: { silent: true },
+  })
+}
+
 type LookupUser = { id: string; name: string | null; email: string }
 
 export function useLookupUser() {

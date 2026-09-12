@@ -22,7 +22,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { useUpdateSite } from "@/lib/queries/sites"
+import { useUpdateSite, useSiteMediaKey } from "@/lib/queries/sites"
 import type { Site } from "./types"
 
 type Props = {
@@ -31,6 +31,7 @@ type Props = {
 
 export function MediaSection({ site }: Props) {
   const updateSite = useUpdateSite(site.id)
+  const revealMediaKey = useSiteMediaKey(site.id)
   const [mediaEnabled, setMediaEnabled] = useState(site.mediaEnabled)
   const [mediaProvider, setMediaProvider] = useState(site.mediaProvider)
   const [mediaApiKey, setMediaApiKey] = useState("")
@@ -144,8 +145,21 @@ export function MediaSection({ site }: Props) {
               />
               <button
                 type="button"
-                onClick={() => setShowKey((v) => !v)}
-                className="absolute inset-y-0 right-0 flex items-center px-2.5 text-muted-foreground hover:text-foreground"
+                onClick={async () => {
+                  // First reveal fetches the saved key once, then it behaves
+                  // like typed text (editable, savable).
+                  if (!showKey && mediaApiKey === "" && site.hasMediaApiKey) {
+                    const result = await revealMediaKey.refetch()
+                    if (result.error || !result.data?.apiKey) {
+                      toast.error("Could not load saved key")
+                      return
+                    }
+                    setMediaApiKey(result.data.apiKey)
+                  }
+                  setShowKey((v) => !v)
+                }}
+                disabled={revealMediaKey.isFetching}
+                className="absolute inset-y-0 right-0 flex items-center px-2.5 text-muted-foreground hover:text-foreground disabled:opacity-50"
                 aria-label={showKey ? "Hide API key" : "Show API key"}
               >
                 {showKey ? (
