@@ -81,11 +81,12 @@ export function MediaSection({ site }: Props) {
       <CardHeader>
         <div className="flex items-center justify-between gap-2">
           <CardTitle className="text-base">Media uploads</CardTitle>
-          {site.hasMediaApiKey ? (
-            <Badge>Key saved</Badge>
-          ) : (
-            <span className="text-xs text-muted-foreground">no key</span>
-          )}
+          {mediaProvider !== "CATBOX" &&
+            (site.hasMediaApiKey ? (
+              <Badge>Key saved</Badge>
+            ) : (
+              <span className="text-xs text-muted-foreground">no key</span>
+            ))}
         </div>
         <CardDescription>
           Let visitors attach images to comments. Images upload through your
@@ -126,52 +127,56 @@ export function MediaSection({ site }: Props) {
                 </SelectItem>
               </SelectContent>
             </Select>
-            <p className="text-xs text-muted-foreground">
-              Catbox needs no API key
-            </p>
+            {mediaProvider === "CATBOX" && (
+              <p className="text-xs text-muted-foreground">
+                Catbox needs no API key — nothing to configure here.
+              </p>
+            )}
           </div>
 
-          <div className="flex flex-col gap-1.5">
-            <Label htmlFor="media-api-key">API key</Label>
-            <div className="relative">
-              <Input
-                id="media-api-key"
-                type={showKey ? "text" : "password"}
-                placeholder={
-                  site.hasMediaApiKey ? "•••••••• (saved)" : "Enter API key"
-                }
-                value={mediaApiKey}
-                onChange={(e) => setMediaApiKey(e.target.value)}
-                autoComplete="new-password"
-                className="pr-9"
-              />
-              <button
-                type="button"
-                onClick={async () => {
-                  // First reveal fetches the saved key once, then it behaves
-                  // like typed text (editable, savable).
-                  if (!showKey && mediaApiKey === "" && site.hasMediaApiKey) {
-                    const result = await revealMediaKey.refetch()
-                    if (result.error || !result.data?.apiKey) {
-                      toast.error("Could not load saved key")
-                      return
-                    }
-                    setMediaApiKey(result.data.apiKey)
+          {mediaProvider !== "CATBOX" && (
+            <div className="flex flex-col gap-1.5">
+              <Label htmlFor="media-api-key">API key</Label>
+              <div className="relative">
+                <Input
+                  id="media-api-key"
+                  type={showKey ? "text" : "password"}
+                  placeholder={
+                    site.hasMediaApiKey ? "•••••••• (saved)" : "Enter API key"
                   }
-                  setShowKey((v) => !v)
-                }}
-                disabled={revealMediaKey.isFetching}
-                className="absolute inset-y-0 right-0 flex items-center px-2.5 text-muted-foreground hover:text-foreground disabled:opacity-50"
-                aria-label={showKey ? "Hide API key" : "Show API key"}
-              >
-                {showKey ? (
-                  <EyeOff className="size-4" />
-                ) : (
-                  <Eye className="size-4" />
-                )}
-              </button>
+                  value={mediaApiKey}
+                  onChange={(e) => setMediaApiKey(e.target.value)}
+                  autoComplete="new-password"
+                  className="pr-9"
+                />
+                <button
+                  type="button"
+                  onClick={async () => {
+                    // First reveal fetches the saved key once, then it behaves
+                    // like typed text (editable, savable).
+                    if (!showKey && mediaApiKey === "" && site.hasMediaApiKey) {
+                      const result = await revealMediaKey.refetch()
+                      if (result.error || !result.data?.apiKey) {
+                        toast.error("Could not load saved key")
+                        return
+                      }
+                      setMediaApiKey(result.data.apiKey)
+                    }
+                    setShowKey((v) => !v)
+                  }}
+                  disabled={revealMediaKey.isFetching}
+                  className="absolute inset-y-0 right-0 flex items-center px-2.5 text-muted-foreground hover:text-foreground disabled:opacity-50"
+                  aria-label={showKey ? "Hide API key" : "Show API key"}
+                >
+                  {showKey ? (
+                    <EyeOff className="size-4" />
+                  ) : (
+                    <Eye className="size-4" />
+                  )}
+                </button>
+              </div>
             </div>
-          </div>
+          )}
 
           <div className="grid grid-cols-2 gap-3">
             <div className="flex flex-col gap-1.5">
