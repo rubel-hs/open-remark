@@ -114,7 +114,7 @@ export function MediaSection({ site }: Props) {
               value={mediaProvider}
               onValueChange={(v) => setMediaProvider(v as typeof mediaProvider)}
             >
-              <SelectTrigger id="media-provider" className="w-44">
+              <SelectTrigger id="media-provider" className="w-44 rounded-md">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
