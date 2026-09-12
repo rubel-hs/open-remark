@@ -1,5 +1,6 @@
 "use client"
 
+import * as React from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { signOut } from "next-auth/react"
@@ -115,6 +116,17 @@ export function AppSidebar({ user, siteCount, platformRole }: Props) {
 
   const pathname = usePathname()
   const { resolvedTheme, setTheme } = useTheme()
+  const [mounted, setMounted] = React.useState(false)
+  // Canonical next-themes mounted guard: avoids a server/client icon mismatch
+  // on first paint. Runs once; not a render-loop subscription.
+  // eslint-disable-next-line react-hooks/set-state-in-effect
+  React.useEffect(() => setMounted(true), [])
+  const isDark = mounted && resolvedTheme === "dark"
+  const themeLabel = !mounted
+    ? "Light mode"
+    : isDark
+      ? "Dark mode"
+      : "Light mode"
   const initials = (user.name ?? user.email ?? "U")
     .split(" ")
     .map((w) => w[0])
@@ -228,18 +240,20 @@ export function AppSidebar({ user, siteCount, platformRole }: Props) {
           )}
           <SidebarMenuItem>
             <SidebarMenuButton
-              tooltip={resolvedTheme === "dark" ? "Dark mode" : "Light mode"}
-              onClick={() =>
-                setTheme(resolvedTheme === "dark" ? "light" : "dark")
-              }
+              tooltip={themeLabel}
+              onClick={() => setTheme(isDark ? "light" : "dark")}
+              suppressHydrationWarning
             >
-              {resolvedTheme === "dark" ? (
+              {isDark ? (
                 <RiMoonLine className="size-4 shrink-0" aria-hidden="true" />
               ) : (
                 <RiSunLine className="size-4 shrink-0" aria-hidden="true" />
               )}
-              <span className="group-data-[collapsible=icon]:hidden">
-                {resolvedTheme === "dark" ? "Dark mode" : "Light mode"}
+              <span
+                className="group-data-[collapsible=icon]:hidden"
+                suppressHydrationWarning
+              >
+                {themeLabel}
               </span>
             </SidebarMenuButton>
           </SidebarMenuItem>
