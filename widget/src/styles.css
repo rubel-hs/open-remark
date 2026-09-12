@@ -1154,12 +1154,12 @@
 
 .z-gallery-single .z-gallery-thumb {
   aspect-ratio: auto;
-  max-height: 480px;
+  max-width: 240px;
 }
 
 .z-gallery-single .z-gallery-thumb img {
+  height: auto;
   object-fit: contain;
-  max-height: 480px;
 }
 
 .z-gallery-thumb:hover {
