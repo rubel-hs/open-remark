@@ -117,9 +117,13 @@ export function MediaSection({ site }: Props) {
               <SelectTrigger id="media-provider" className="w-44 rounded-md">
                 <SelectValue />
               </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="IMGBB">ImgBB</SelectItem>
-                <SelectItem value="CATBOX">Catbox</SelectItem>
+              <SelectContent className="rounded-md">
+                <SelectItem value="IMGBB" className="rounded-md">
+                  ImgBB
+                </SelectItem>
+                <SelectItem value="CATBOX" className="rounded-md">
+                  Catbox
+                </SelectItem>
               </SelectContent>
             </Select>
             <p className="text-xs text-muted-foreground">
