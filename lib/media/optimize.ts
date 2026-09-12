@@ -2,7 +2,7 @@ import sharp from "sharp"
 
 export type ImageKind = "jpeg" | "png" | "gif" | "webp"
 
-const QUALITY = 75
+export const DEFAULT_QUALITY = 75
 const MAX_EDGE = 1600
 
 const ORIGINAL_MIME: Record<ImageKind, string> = {
@@ -40,8 +40,11 @@ export function detectImageKind(bytes: Uint8Array): ImageKind | null {
 
 export async function optimizeImage(
   bytes: Buffer,
-  kind: ImageKind
+  kind: ImageKind,
+  quality: number = DEFAULT_QUALITY
 ): Promise<{ buffer: Buffer; mime: string }> {
+  // Clamp defensively — callers validate, but a bad row must not crash sharp.
+  const q = Math.min(100, Math.max(1, Math.round(quality) || DEFAULT_QUALITY))
   // `animated: kind === "gif"` preserves every frame of animated GIF input;
   // still WebP input is flattened to its first frame.
   const encoded = await sharp(bytes, { animated: kind === "gif" })
@@ -51,7 +54,7 @@ export async function optimizeImage(
       fit: "inside",
       withoutEnlargement: true,
     })
-    .webp({ quality: QUALITY, effort: 4 })
+    .webp({ quality: q, effort: 4 })
     .toBuffer()
   // Never-grow rule: keep the original when re-encoding costs bytes.
   if (encoded.length >= bytes.length)

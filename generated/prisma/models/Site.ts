@@ -32,6 +32,7 @@ export type SiteAvgAggregateOutputType = {
   radius: number | null
   mediaMaxImages: number | null
   mediaMaxBytes: number | null
+  mediaQuality: number | null
 }
 
 export type SiteSumAggregateOutputType = {
@@ -40,6 +41,7 @@ export type SiteSumAggregateOutputType = {
   radius: number | null
   mediaMaxImages: number | null
   mediaMaxBytes: number | null
+  mediaQuality: number | null
 }
 
 export type SiteMinAggregateOutputType = {
@@ -69,6 +71,7 @@ export type SiteMinAggregateOutputType = {
   mediaApiKey: string | null
   mediaMaxImages: number | null
   mediaMaxBytes: number | null
+  mediaQuality: number | null
   createdAt: Date | null
   updatedAt: Date | null
   ownerId: string | null
@@ -101,6 +104,7 @@ export type SiteMaxAggregateOutputType = {
   mediaApiKey: string | null
   mediaMaxImages: number | null
   mediaMaxBytes: number | null
+  mediaQuality: number | null
   createdAt: Date | null
   updatedAt: Date | null
   ownerId: string | null
@@ -133,6 +137,7 @@ export type SiteCountAggregateOutputType = {
   mediaApiKey: number
   mediaMaxImages: number
   mediaMaxBytes: number
+  mediaQuality: number
   createdAt: number
   updatedAt: number
   ownerId: number
@@ -146,6 +151,7 @@ export type SiteAvgAggregateInputType = {
   radius?: true
   mediaMaxImages?: true
   mediaMaxBytes?: true
+  mediaQuality?: true
 }
 
 export type SiteSumAggregateInputType = {
@@ -154,6 +160,7 @@ export type SiteSumAggregateInputType = {
   radius?: true
   mediaMaxImages?: true
   mediaMaxBytes?: true
+  mediaQuality?: true
 }
 
 export type SiteMinAggregateInputType = {
@@ -183,6 +190,7 @@ export type SiteMinAggregateInputType = {
   mediaApiKey?: true
   mediaMaxImages?: true
   mediaMaxBytes?: true
+  mediaQuality?: true
   createdAt?: true
   updatedAt?: true
   ownerId?: true
@@ -215,6 +223,7 @@ export type SiteMaxAggregateInputType = {
   mediaApiKey?: true
   mediaMaxImages?: true
   mediaMaxBytes?: true
+  mediaQuality?: true
   createdAt?: true
   updatedAt?: true
   ownerId?: true
@@ -247,6 +256,7 @@ export type SiteCountAggregateInputType = {
   mediaApiKey?: true
   mediaMaxImages?: true
   mediaMaxBytes?: true
+  mediaQuality?: true
   createdAt?: true
   updatedAt?: true
   ownerId?: true
@@ -366,6 +376,7 @@ export type SiteGroupByOutputType = {
   mediaApiKey: string | null
   mediaMaxImages: number
   mediaMaxBytes: number
+  mediaQuality: number
   createdAt: Date
   updatedAt: Date
   ownerId: string
@@ -421,6 +432,7 @@ export type SiteWhereInput = {
   mediaApiKey?: Prisma.StringNullableFilter<"Site"> | string | null
   mediaMaxImages?: Prisma.IntFilter<"Site"> | number
   mediaMaxBytes?: Prisma.IntFilter<"Site"> | number
+  mediaQuality?: Prisma.IntFilter<"Site"> | number
   createdAt?: Prisma.DateTimeFilter<"Site"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Site"> | Date | string
   ownerId?: Prisma.StringFilter<"Site"> | string
@@ -458,6 +470,7 @@ export type SiteOrderByWithRelationInput = {
   mediaApiKey?: Prisma.SortOrderInput | Prisma.SortOrder
   mediaMaxImages?: Prisma.SortOrder
   mediaMaxBytes?: Prisma.SortOrder
+  mediaQuality?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
@@ -498,6 +511,7 @@ export type SiteWhereUniqueInput = Prisma.AtLeast<{
   mediaApiKey?: Prisma.StringNullableFilter<"Site"> | string | null
   mediaMaxImages?: Prisma.IntFilter<"Site"> | number
   mediaMaxBytes?: Prisma.IntFilter<"Site"> | number
+  mediaQuality?: Prisma.IntFilter<"Site"> | number
   createdAt?: Prisma.DateTimeFilter<"Site"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Site"> | Date | string
   ownerId?: Prisma.StringFilter<"Site"> | string
@@ -535,6 +549,7 @@ export type SiteOrderByWithAggregationInput = {
   mediaApiKey?: Prisma.SortOrderInput | Prisma.SortOrder
   mediaMaxImages?: Prisma.SortOrder
   mediaMaxBytes?: Prisma.SortOrder
+  mediaQuality?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
@@ -575,6 +590,7 @@ export type SiteScalarWhereWithAggregatesInput = {
   mediaApiKey?: Prisma.StringNullableWithAggregatesFilter<"Site"> | string | null
   mediaMaxImages?: Prisma.IntWithAggregatesFilter<"Site"> | number
   mediaMaxBytes?: Prisma.IntWithAggregatesFilter<"Site"> | number
+  mediaQuality?: Prisma.IntWithAggregatesFilter<"Site"> | number
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Site"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Site"> | Date | string
   ownerId?: Prisma.StringWithAggregatesFilter<"Site"> | string
@@ -607,6 +623,7 @@ export type SiteCreateInput = {
   mediaApiKey?: string | null
   mediaMaxImages?: number
   mediaMaxBytes?: number
+  mediaQuality?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   owner: Prisma.UserCreateNestedOneWithoutSitesInput
@@ -643,6 +660,7 @@ export type SiteUncheckedCreateInput = {
   mediaApiKey?: string | null
   mediaMaxImages?: number
   mediaMaxBytes?: number
+  mediaQuality?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   ownerId: string
@@ -679,6 +697,7 @@ export type SiteUpdateInput = {
   mediaApiKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mediaMaxImages?: Prisma.IntFieldUpdateOperationsInput | number
   mediaMaxBytes?: Prisma.IntFieldUpdateOperationsInput | number
+  mediaQuality?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   owner?: Prisma.UserUpdateOneRequiredWithoutSitesNestedInput
@@ -715,6 +734,7 @@ export type SiteUncheckedUpdateInput = {
   mediaApiKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mediaMaxImages?: Prisma.IntFieldUpdateOperationsInput | number
   mediaMaxBytes?: Prisma.IntFieldUpdateOperationsInput | number
+  mediaQuality?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -751,6 +771,7 @@ export type SiteCreateManyInput = {
   mediaApiKey?: string | null
   mediaMaxImages?: number
   mediaMaxBytes?: number
+  mediaQuality?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   ownerId: string
@@ -783,6 +804,7 @@ export type SiteUpdateManyMutationInput = {
   mediaApiKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mediaMaxImages?: Prisma.IntFieldUpdateOperationsInput | number
   mediaMaxBytes?: Prisma.IntFieldUpdateOperationsInput | number
+  mediaQuality?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -814,6 +836,7 @@ export type SiteUncheckedUpdateManyInput = {
   mediaApiKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mediaMaxImages?: Prisma.IntFieldUpdateOperationsInput | number
   mediaMaxBytes?: Prisma.IntFieldUpdateOperationsInput | number
+  mediaQuality?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -856,6 +879,7 @@ export type SiteCountOrderByAggregateInput = {
   mediaApiKey?: Prisma.SortOrder
   mediaMaxImages?: Prisma.SortOrder
   mediaMaxBytes?: Prisma.SortOrder
+  mediaQuality?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
@@ -867,6 +891,7 @@ export type SiteAvgOrderByAggregateInput = {
   radius?: Prisma.SortOrder
   mediaMaxImages?: Prisma.SortOrder
   mediaMaxBytes?: Prisma.SortOrder
+  mediaQuality?: Prisma.SortOrder
 }
 
 export type SiteMaxOrderByAggregateInput = {
@@ -896,6 +921,7 @@ export type SiteMaxOrderByAggregateInput = {
   mediaApiKey?: Prisma.SortOrder
   mediaMaxImages?: Prisma.SortOrder
   mediaMaxBytes?: Prisma.SortOrder
+  mediaQuality?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
@@ -928,6 +954,7 @@ export type SiteMinOrderByAggregateInput = {
   mediaApiKey?: Prisma.SortOrder
   mediaMaxImages?: Prisma.SortOrder
   mediaMaxBytes?: Prisma.SortOrder
+  mediaQuality?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
@@ -939,6 +966,7 @@ export type SiteSumOrderByAggregateInput = {
   radius?: Prisma.SortOrder
   mediaMaxImages?: Prisma.SortOrder
   mediaMaxBytes?: Prisma.SortOrder
+  mediaQuality?: Prisma.SortOrder
 }
 
 export type SiteScalarRelationFilter = {
@@ -1087,6 +1115,7 @@ export type SiteCreateWithoutOwnerInput = {
   mediaApiKey?: string | null
   mediaMaxImages?: number
   mediaMaxBytes?: number
+  mediaQuality?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   pages?: Prisma.PageCreateNestedManyWithoutSiteInput
@@ -1122,6 +1151,7 @@ export type SiteUncheckedCreateWithoutOwnerInput = {
   mediaApiKey?: string | null
   mediaMaxImages?: number
   mediaMaxBytes?: number
+  mediaQuality?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   pages?: Prisma.PageUncheckedCreateNestedManyWithoutSiteInput
@@ -1186,6 +1216,7 @@ export type SiteScalarWhereInput = {
   mediaApiKey?: Prisma.StringNullableFilter<"Site"> | string | null
   mediaMaxImages?: Prisma.IntFilter<"Site"> | number
   mediaMaxBytes?: Prisma.IntFilter<"Site"> | number
+  mediaQuality?: Prisma.IntFilter<"Site"> | number
   createdAt?: Prisma.DateTimeFilter<"Site"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Site"> | Date | string
   ownerId?: Prisma.StringFilter<"Site"> | string
@@ -1218,6 +1249,7 @@ export type SiteCreateWithoutPagesInput = {
   mediaApiKey?: string | null
   mediaMaxImages?: number
   mediaMaxBytes?: number
+  mediaQuality?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   owner: Prisma.UserCreateNestedOneWithoutSitesInput
@@ -1253,6 +1285,7 @@ export type SiteUncheckedCreateWithoutPagesInput = {
   mediaApiKey?: string | null
   mediaMaxImages?: number
   mediaMaxBytes?: number
+  mediaQuality?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   ownerId: string
@@ -1304,6 +1337,7 @@ export type SiteUpdateWithoutPagesInput = {
   mediaApiKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mediaMaxImages?: Prisma.IntFieldUpdateOperationsInput | number
   mediaMaxBytes?: Prisma.IntFieldUpdateOperationsInput | number
+  mediaQuality?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   owner?: Prisma.UserUpdateOneRequiredWithoutSitesNestedInput
@@ -1339,6 +1373,7 @@ export type SiteUncheckedUpdateWithoutPagesInput = {
   mediaApiKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mediaMaxImages?: Prisma.IntFieldUpdateOperationsInput | number
   mediaMaxBytes?: Prisma.IntFieldUpdateOperationsInput | number
+  mediaQuality?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1374,6 +1409,7 @@ export type SiteCreateWithoutBannedCommentersInput = {
   mediaApiKey?: string | null
   mediaMaxImages?: number
   mediaMaxBytes?: number
+  mediaQuality?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   owner: Prisma.UserCreateNestedOneWithoutSitesInput
@@ -1409,6 +1445,7 @@ export type SiteUncheckedCreateWithoutBannedCommentersInput = {
   mediaApiKey?: string | null
   mediaMaxImages?: number
   mediaMaxBytes?: number
+  mediaQuality?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   ownerId: string
@@ -1460,6 +1497,7 @@ export type SiteUpdateWithoutBannedCommentersInput = {
   mediaApiKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mediaMaxImages?: Prisma.IntFieldUpdateOperationsInput | number
   mediaMaxBytes?: Prisma.IntFieldUpdateOperationsInput | number
+  mediaQuality?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   owner?: Prisma.UserUpdateOneRequiredWithoutSitesNestedInput
@@ -1495,6 +1533,7 @@ export type SiteUncheckedUpdateWithoutBannedCommentersInput = {
   mediaApiKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mediaMaxImages?: Prisma.IntFieldUpdateOperationsInput | number
   mediaMaxBytes?: Prisma.IntFieldUpdateOperationsInput | number
+  mediaQuality?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1530,6 +1569,7 @@ export type SiteCreateWithoutMembersInput = {
   mediaApiKey?: string | null
   mediaMaxImages?: number
   mediaMaxBytes?: number
+  mediaQuality?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   owner: Prisma.UserCreateNestedOneWithoutSitesInput
@@ -1565,6 +1605,7 @@ export type SiteUncheckedCreateWithoutMembersInput = {
   mediaApiKey?: string | null
   mediaMaxImages?: number
   mediaMaxBytes?: number
+  mediaQuality?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   ownerId: string
@@ -1616,6 +1657,7 @@ export type SiteUpdateWithoutMembersInput = {
   mediaApiKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mediaMaxImages?: Prisma.IntFieldUpdateOperationsInput | number
   mediaMaxBytes?: Prisma.IntFieldUpdateOperationsInput | number
+  mediaQuality?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   owner?: Prisma.UserUpdateOneRequiredWithoutSitesNestedInput
@@ -1651,6 +1693,7 @@ export type SiteUncheckedUpdateWithoutMembersInput = {
   mediaApiKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mediaMaxImages?: Prisma.IntFieldUpdateOperationsInput | number
   mediaMaxBytes?: Prisma.IntFieldUpdateOperationsInput | number
+  mediaQuality?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1686,6 +1729,7 @@ export type SiteCreateWithoutInvitesInput = {
   mediaApiKey?: string | null
   mediaMaxImages?: number
   mediaMaxBytes?: number
+  mediaQuality?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   owner: Prisma.UserCreateNestedOneWithoutSitesInput
@@ -1721,6 +1765,7 @@ export type SiteUncheckedCreateWithoutInvitesInput = {
   mediaApiKey?: string | null
   mediaMaxImages?: number
   mediaMaxBytes?: number
+  mediaQuality?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   ownerId: string
@@ -1772,6 +1817,7 @@ export type SiteUpdateWithoutInvitesInput = {
   mediaApiKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mediaMaxImages?: Prisma.IntFieldUpdateOperationsInput | number
   mediaMaxBytes?: Prisma.IntFieldUpdateOperationsInput | number
+  mediaQuality?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   owner?: Prisma.UserUpdateOneRequiredWithoutSitesNestedInput
@@ -1807,6 +1853,7 @@ export type SiteUncheckedUpdateWithoutInvitesInput = {
   mediaApiKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mediaMaxImages?: Prisma.IntFieldUpdateOperationsInput | number
   mediaMaxBytes?: Prisma.IntFieldUpdateOperationsInput | number
+  mediaQuality?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1842,6 +1889,7 @@ export type SiteCreateManyOwnerInput = {
   mediaApiKey?: string | null
   mediaMaxImages?: number
   mediaMaxBytes?: number
+  mediaQuality?: number
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -1873,6 +1921,7 @@ export type SiteUpdateWithoutOwnerInput = {
   mediaApiKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mediaMaxImages?: Prisma.IntFieldUpdateOperationsInput | number
   mediaMaxBytes?: Prisma.IntFieldUpdateOperationsInput | number
+  mediaQuality?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   pages?: Prisma.PageUpdateManyWithoutSiteNestedInput
@@ -1908,6 +1957,7 @@ export type SiteUncheckedUpdateWithoutOwnerInput = {
   mediaApiKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mediaMaxImages?: Prisma.IntFieldUpdateOperationsInput | number
   mediaMaxBytes?: Prisma.IntFieldUpdateOperationsInput | number
+  mediaQuality?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   pages?: Prisma.PageUncheckedUpdateManyWithoutSiteNestedInput
@@ -1943,6 +1993,7 @@ export type SiteUncheckedUpdateManyWithoutOwnerInput = {
   mediaApiKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mediaMaxImages?: Prisma.IntFieldUpdateOperationsInput | number
   mediaMaxBytes?: Prisma.IntFieldUpdateOperationsInput | number
+  mediaQuality?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -2032,6 +2083,7 @@ export type SiteSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   mediaApiKey?: boolean
   mediaMaxImages?: boolean
   mediaMaxBytes?: boolean
+  mediaQuality?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   ownerId?: boolean
@@ -2070,6 +2122,7 @@ export type SiteSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   mediaApiKey?: boolean
   mediaMaxImages?: boolean
   mediaMaxBytes?: boolean
+  mediaQuality?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   ownerId?: boolean
@@ -2103,6 +2156,7 @@ export type SiteSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   mediaApiKey?: boolean
   mediaMaxImages?: boolean
   mediaMaxBytes?: boolean
+  mediaQuality?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   ownerId?: boolean
@@ -2136,12 +2190,13 @@ export type SiteSelectScalar = {
   mediaApiKey?: boolean
   mediaMaxImages?: boolean
   mediaMaxBytes?: boolean
+  mediaQuality?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   ownerId?: boolean
 }
 
-export type SiteOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "domain" | "siteKey" | "allowedOrigins" | "autoApprove" | "allowAnonymous" | "emailNotificationsEnabled" | "likeNotificationLimit" | "emailSubjectPrefix" | "emailLogoUrl" | "emailAccentColor" | "emailFooterText" | "smtpHost" | "smtpPort" | "smtpUser" | "smtpPass" | "smtpFrom" | "theme" | "primaryColor" | "radius" | "mediaEnabled" | "mediaProvider" | "mediaApiKey" | "mediaMaxImages" | "mediaMaxBytes" | "createdAt" | "updatedAt" | "ownerId", ExtArgs["result"]["site"]>
+export type SiteOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "domain" | "siteKey" | "allowedOrigins" | "autoApprove" | "allowAnonymous" | "emailNotificationsEnabled" | "likeNotificationLimit" | "emailSubjectPrefix" | "emailLogoUrl" | "emailAccentColor" | "emailFooterText" | "smtpHost" | "smtpPort" | "smtpUser" | "smtpPass" | "smtpFrom" | "theme" | "primaryColor" | "radius" | "mediaEnabled" | "mediaProvider" | "mediaApiKey" | "mediaMaxImages" | "mediaMaxBytes" | "mediaQuality" | "createdAt" | "updatedAt" | "ownerId", ExtArgs["result"]["site"]>
 export type SiteInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   pages?: boolean | Prisma.Site$pagesArgs<ExtArgs>
@@ -2193,6 +2248,7 @@ export type $SitePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     mediaApiKey: string | null
     mediaMaxImages: number
     mediaMaxBytes: number
+    mediaQuality: number
     createdAt: Date
     updatedAt: Date
     ownerId: string
@@ -2650,6 +2706,7 @@ export interface SiteFieldRefs {
   readonly mediaApiKey: Prisma.FieldRef<"Site", 'String'>
   readonly mediaMaxImages: Prisma.FieldRef<"Site", 'Int'>
   readonly mediaMaxBytes: Prisma.FieldRef<"Site", 'Int'>
+  readonly mediaQuality: Prisma.FieldRef<"Site", 'Int'>
   readonly createdAt: Prisma.FieldRef<"Site", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Site", 'DateTime'>
   readonly ownerId: Prisma.FieldRef<"Site", 'String'>

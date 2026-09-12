@@ -160,6 +160,7 @@ export const SiteScalarFieldEnum = {
   mediaApiKey: 'mediaApiKey',
   mediaMaxImages: 'mediaMaxImages',
   mediaMaxBytes: 'mediaMaxBytes',
+  mediaQuality: 'mediaQuality',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   ownerId: 'ownerId'

@@ -56,7 +56,8 @@ model Site {
   mediaProvider MediaProvider @default(IMGBB)
   mediaApiKey   String?       // null for CATBOX; server-read only, never serialized to clients
   mediaMaxImages Int          @default(4)
-  mediaMaxBytes  Int          @default(5242880) // 5 MB pre-optimization
+  mediaMaxBytes  Int           @default(5242880) // 5 MB pre-optimization
+  mediaQuality   Int           @default(75)
 }
 
 model Comment {
@@ -78,7 +79,7 @@ New widget route following the widget pattern: `OPTIONS` preflight,
 
 1. Parse `multipart/form-data` in the route (`req.formData()`), pass bytes + metadata to the service.
 2. Reject when `!site.mediaEnabled` (403), banned (403), bad type by magic bytes not extension (422), over `site.mediaMaxBytes` (413).
-3. Optimize (`lib/media/optimize.ts`, `sharp`): stills → WebP q75, fit-inside 1600 px longest edge (never upscale), strip EXIF/metadata; animated GIF → animated WebP q75 (frame-preserving); if output ≥ input, keep the original (never-grow rule).
+3. Optimize (`lib/media/optimize.ts`, `sharp`): stills → WebP at the site's `mediaQuality` (1–100, default 75), fit-inside 1600 px longest edge (never upscale), strip EXIF/metadata; animated GIF → animated WebP at the same quality (frame-preserving); if output ≥ input, keep the original (never-grow rule).
 4. Upload (`lib/media/providers/<imgbb|catbox|imgur>.ts` behind `uploadImage(buffer, { provider, apiKey })`): imgbb `POST api.imgbb.com/1/upload` (multipart, `expiration` unset = permanent); catbox `POST catbox.moe/user/api.php` (`reqtype=fileupload`, no key); imgur throws `ApiError(501)` until implemented.
 5. Return `{ url, thumbUrl?, deleteUrl? }` (clients fall back to `url` when a provider supplies no thumbnail). Single retry on provider 5xx, then 502 — no silent cross-provider fallback in v1 (avoids surprise quota burn).
 
@@ -87,7 +88,7 @@ New widget route following the widget pattern: `OPTIONS` preflight,
 - `CreateCommentSchema` gains `imageUrls` (https-only URLs, max 10, optional) and allows an empty `body` when ≥1 image is attached ("text or images" refine); `createComment` throws 403 when images attached but `mediaEnabled` is false, and caps count at `site.mediaMaxImages`. Images inherit the comment's `PENDING/APPROVED` lifecycle — no separate moderation queue.
 - All comment selectors/serializers (`buildCommentSelect`, `getApprovedCommentsForPage`, create/update/delete returns) include `imageUrls`.
 - GET `/api/widget/comments` config block gains `mediaEnabled`, `mediaMaxImages`, `mediaMaxBytes` so the widget renders the image button only when allowed.
-- `UpdateSiteSchema` gains the five media fields (`mediaMaxImages`: int 1–10, default 4, `mediaMaxBytes`: positive int ≤ 32 MB provider ceiling, `mediaProvider`: native enum, `mediaApiKey`: nullable string); the admin PATCH writes `mediaApiKey` but no GET serializes it (password semantics: UI shows saved/replace/clear, never the value).
+- `UpdateSiteSchema` gains the six media fields (`mediaMaxImages`: int 1–10, default 4, `mediaMaxBytes`: positive int ≤ 32 MB provider ceiling, `mediaQuality`: int 1–100, default 75, `mediaProvider`: native enum, `mediaApiKey`: nullable string); the admin PATCH writes `mediaApiKey` but no list/detail GET serializes it (empty input keeps the saved key; the eye button reveals it via a dedicated `GET .../media-key` endpoint gated by `MANAGE_SETTINGS`).
 - Edit comment: images removable, not addable; clearing the text is allowed while images remain (the edit route 400s only a result with neither text nor images). Delete: soft-delete unchanged; gallery hidden on DELETED/SPAM; provider `deleteUrl` fired best-effort, failures swallowed (free hosts are sticky).
 
 ## 8. Dashboard UI

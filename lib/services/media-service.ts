@@ -25,6 +25,7 @@ export async function uploadMedia(input: {
     mediaProvider: MediaProvider
     mediaApiKey: string | null
     mediaMaxBytes: number
+    mediaQuality: number
   }
   bytes: Buffer
   filename: string
@@ -36,7 +37,7 @@ export async function uploadMedia(input: {
     throw new ApiError("Image is too large", 413)
   const kind = detectImageKind(bytes)
   if (!kind) throw new ApiError("Unsupported image type", 422)
-  const optimized = await optimizeImage(bytes, kind)
+  const optimized = await optimizeImage(bytes, kind, site.mediaQuality)
   const ext = optimized.mime === "image/webp" ? "webp" : kind
   return uploadToProvider({
     buffer: optimized.buffer,

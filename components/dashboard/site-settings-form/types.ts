@@ -25,5 +25,6 @@ export type Site = {
   mediaProvider: "IMGBB" | "CATBOX" | "IMGUR"
   mediaMaxImages: number
   mediaMaxBytes: number
+  mediaQuality: number
   hasMediaApiKey: boolean
 }

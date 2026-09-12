@@ -217,6 +217,9 @@ export async function updateSite(
         ...(typeof input.mediaMaxBytes === "number" && {
           mediaMaxBytes: input.mediaMaxBytes,
         }),
+        ...(typeof input.mediaQuality === "number" && {
+          mediaQuality: input.mediaQuality,
+        }),
       },
     })
   )

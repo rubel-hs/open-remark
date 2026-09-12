@@ -42,6 +42,7 @@ export function MediaSection({ site }: Props) {
   const [mediaMaxBytesMB, setMediaMaxBytesMB] = useState(
     (site.mediaMaxBytes / 1048576).toFixed(1)
   )
+  const [mediaQuality, setMediaQuality] = useState(String(site.mediaQuality))
 
   function handleSave(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -65,6 +66,10 @@ export function MediaSection({ site }: Props) {
             33554432,
             Math.round((parseFloat(mediaMaxBytesMB) || 5) * 1048576)
           )
+        ),
+        mediaQuality: Math.max(
+          1,
+          Math.min(100, parseInt(mediaQuality, 10) || 75)
         ),
       },
       {
@@ -178,7 +183,7 @@ export function MediaSection({ site }: Props) {
             </div>
           )}
 
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-3 gap-3">
             <div className="flex flex-col gap-1.5">
               <Label htmlFor="media-max-images">Max images (1–10)</Label>
               <Input
@@ -202,6 +207,18 @@ export function MediaSection({ site }: Props) {
                 step="any"
                 value={mediaMaxBytesMB}
                 onChange={(e) => setMediaMaxBytesMB(e.target.value)}
+              />
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <Label htmlFor="media-quality">Quality (1–100)</Label>
+              <Input
+                id="media-quality"
+                name="mediaQuality"
+                type="number"
+                min={1}
+                max={100}
+                value={mediaQuality}
+                onChange={(e) => setMediaQuality(e.target.value)}
               />
             </div>
           </div>
