@@ -36,7 +36,6 @@ export function MediaSection({ site }: Props) {
   const [mediaProvider, setMediaProvider] = useState(site.mediaProvider)
   const [mediaApiKey, setMediaApiKey] = useState("")
   const [showKey, setShowKey] = useState(false)
-  const [clearKey, setClearKey] = useState(false)
   const [mediaMaxImages, setMediaMaxImages] = useState(
     String(site.mediaMaxImages)
   )
@@ -50,11 +49,12 @@ export function MediaSection({ site }: Props) {
       {
         mediaEnabled,
         mediaProvider,
-        ...(clearKey
-          ? { mediaApiKey: null }
-          : mediaApiKey.trim() !== ""
-            ? { mediaApiKey: mediaApiKey.trim() }
-            : {}),
+        // Empty input leaves the saved key untouched; typing a value replaces
+        // it. (There is intentionally no delete affordance — switching to a
+        // keyless provider like Catbox simply ignores any stored key.)
+        ...(mediaApiKey.trim() !== ""
+          ? { mediaApiKey: mediaApiKey.trim() }
+          : {}),
         mediaMaxImages: Math.max(
           1,
           Math.min(10, parseInt(mediaMaxImages, 10) || 4)
@@ -71,7 +71,6 @@ export function MediaSection({ site }: Props) {
         onSuccess: () => {
           toast.success("Media settings saved")
           setMediaApiKey("")
-          setClearKey(false)
         },
       }
     )
@@ -141,7 +140,6 @@ export function MediaSection({ site }: Props) {
                 onChange={(e) => setMediaApiKey(e.target.value)}
                 autoComplete="new-password"
                 className="pr-9"
-                disabled={clearKey}
               />
               <button
                 type="button"
@@ -169,20 +167,6 @@ export function MediaSection({ site }: Props) {
                 )}
               </button>
             </div>
-            {site.hasMediaApiKey && (
-              <div className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  id="media-clear-key"
-                  checked={clearKey}
-                  onChange={(e) => setClearKey(e.target.checked)}
-                  className="size-4 rounded-sm border-input"
-                />
-                <Label htmlFor="media-clear-key" className="cursor-pointer">
-                  Remove saved key on save
-                </Label>
-              </div>
-            )}
           </div>
 
           <div className="grid grid-cols-2 gap-3">
