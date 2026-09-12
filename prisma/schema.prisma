@@ -122,7 +122,7 @@ model Site {
   mediaApiKey    String?
   mediaMaxImages Int           @default(4)
   mediaMaxBytes  Int           @default(5242880)
-  mediaQuality   Int           @default(75)
+  mediaQuality   Int           @default(70)
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 

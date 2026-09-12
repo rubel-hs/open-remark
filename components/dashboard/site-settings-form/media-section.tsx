@@ -69,7 +69,7 @@ export function MediaSection({ site }: Props) {
         ),
         mediaQuality: Math.max(
           1,
-          Math.min(100, parseInt(mediaQuality, 10) || 75)
+          Math.min(100, parseInt(mediaQuality, 10) || 70)
         ),
       },
       {

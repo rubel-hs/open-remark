@@ -2,7 +2,7 @@ import sharp from "sharp"
 
 export type ImageKind = "jpeg" | "png" | "gif" | "webp"
 
-export const DEFAULT_QUALITY = 75
+export const DEFAULT_QUALITY = 70
 const MAX_EDGE = 1600
 
 const ORIGINAL_MIME: Record<ImageKind, string> = {
